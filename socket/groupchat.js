@@ -16,7 +16,7 @@ module.exports = function(io, Users){
     socket.on('trialData', data => {
       console.log(data.rules);
       const room = data.room;
-      socket.broadcast.to(room).emit('trialDataBackToClient', data);
+      io.to(room).emit('trialDataBackToClient', data);
     });
     /////////////////////////////////////////
 
@@ -26,8 +26,7 @@ module.exports = function(io, Users){
           const sender = data.sender;
           const message = data.dataURL;
           const room = data.room;
-          io.to(room).emit('canvasDataBackToClient',{
-
+          socket.broadcasts.to(room).emit('canvasDataBackToClient',{
                   //The sender's username
                   sender : data.sender,
                   //Message sent to receiver

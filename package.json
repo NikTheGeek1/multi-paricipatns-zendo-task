@@ -1,0 +1,11 @@
+{
+  "name": "mutli-participants-zendo-task",
+  "version": "1.0.0",
+  "description": "This is an experiment were 2 participants are taking part at the same time. It uses nodejs, socketio, express and more",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikos Theodoropoulos",
+  "license": "ISC"
+}

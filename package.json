@@ -4,8 +4,8 @@
   "description": "This is an experiment were 2 participants are taking part at the same time. It uses nodejs, socketio, express and more",
   "main": "index.js",
   "engines": {
-    "node": "7.10.1",
-    "npm": "5.3.0"
+    "node": "12.15.0",
+    "npm": "6.13.4"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

@@ -25,7 +25,7 @@ const MongoClient = require('mongodb').MongoClient;
 container.resolve(function(users, _, group){
 
   // adding mongoose connection to the database
-  mongoose.Promise = global.Promise;
+  //mongoose.Promise = global.Promise;
   const uri = process.env.MONGODB_URI;
   //
   // "mongodb://janphilipp1995:Kletterchen1995@cluster0-shard-00-00-9uthh.mongodb.net:27017,cluster0-shard-00-01-9uthh.mongodb.net:27017,cluster0-shard-00-02-9uthh.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority"

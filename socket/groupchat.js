@@ -26,7 +26,7 @@ module.exports = function(io, Users){
           const sender = data.sender;
           const message = data.dataURL;
           const room = data.room;
-          socket.broadcast.to(room).emit('canvasDataBackToClient',{
+          io.to(room).emit('canvasDataBackToClient',{
 
                   //The sender's username
                   sender : data.sender,

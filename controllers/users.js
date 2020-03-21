@@ -21,7 +21,8 @@ module.exports = function(_, roomFunctions){
 
       getSignUp:function(req, res){
         //console.log(req.flash('error')) // this shouldn't be an empty list, check this when u can
-
+        var roomDetails = roomFunctions.main(io);
+        console.log(roomDetails);
         return res.render('signup', {messages: req.flash('error'), hasErrors: req.flash('error').length > 0}) // renders a file from the views folder along side with an object
       },
       postSignUp: function(req, res){

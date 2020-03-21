@@ -9,8 +9,7 @@ $(document).ready(function(){
   // since both participants undergo the same trial
   // we'll need to set up the random variables once
   // and share them between the participants
-
-
+  
   socket = io({reconnection: false}); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{

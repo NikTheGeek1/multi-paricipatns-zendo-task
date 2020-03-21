@@ -11,7 +11,7 @@ $(document).ready(function(){
   // and share them between the participants
 
 
-  socket = io(); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
+  socket = io({reconnection: false}); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{
 // debugger
@@ -31,7 +31,7 @@ $(document).ready(function(){
           iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
         }
         catch(err) {
-          
+
           location.reload();
         } // closing catch
 

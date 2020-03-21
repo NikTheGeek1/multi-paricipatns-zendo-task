@@ -14,7 +14,7 @@ module.exports = function(io, Users){
     // Getting trial data from client
     /////////////////////////////////////////
     socket.on('trialData', data => {
-      console.log(data.rules);
+
       const room = data.room;
       io.to(room).emit('trialDataBackToClient', data);
     });
@@ -26,7 +26,7 @@ module.exports = function(io, Users){
           const sender = data.sender;
           const message = data.dataURL;
           const room = data.room;
-          socket.broadcasts.to(room).emit('canvasDataBackToClient',{
+          socket.broadcast.to(room).emit('canvasDataBackToClient',{
                   //The sender's username
                   sender : data.sender,
                   //Message sent to receiver
@@ -41,13 +41,13 @@ module.exports = function(io, Users){
 
 
 
-    console.log('User Connected'); // this will be displayed to the terminal
     // listenning to the joint event coming from the client
     socket.on('join', (params, callback) => { // event is the data sent from the event called join
       socket.join(params.room);// this method allows users to connect to a particular channel, takes argument room name
       users.AddUserData(socket.id, params.username, params.room);
+      console.log('User '+params.username+' has joined room '+ params.room); // this will be displayed to the terminal
 
-      io.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
+      socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
 
 
 
@@ -61,6 +61,8 @@ module.exports = function(io, Users){
   socket.on('disconnect', () => {
     var user = users.RemoveUser(socket.id);
     if(user){
+      console.log(io.sockets.adapter.rooms);
+      console.log("User disconnected ");
       io.to(user.room).emit('usersList', {params:'', users:users.GetUsersList(user.room)}); // getting the user list using the function defined in the Users class
     }
   });

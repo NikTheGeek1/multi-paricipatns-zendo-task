@@ -1,8 +1,7 @@
 //  CLIENT SIDE
 
-
-
 $(document).ready(function(){
+
 
   /////////////////////////////////////////////////
   // setting up the game
@@ -12,24 +11,33 @@ $(document).ready(function(){
   // and share them between the participants
 
 
-
   socket = io(); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{
-    debugger
+// debugger
     rules = data.rules;
     rand_trial = data.rand_trial;
     examples = data.examples;
     test_cases = data.test_cases;
     rule_names = data.rule_names;
     rand_counter = data.rand_counter;
+
     var iframe = document.getElementById("game_frame");
     document.getElementById('game').style.visibility = "visible";
 
     if (iframe) {
         var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-        iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
-  }
+        try {
+          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
+        }
+        catch(err) {
+          
+          location.reload();
+        } // closing catch
+
+
+  } // closing of if statement
+
   });
 
   /////////////////////////////////////////////////
@@ -48,7 +56,7 @@ $(document).ready(function(){
     image.style.display = "inline-block";
   });
 
-  socket.on('connect', function(){ // this listens to the connect event each time a SOCKET is connected
+  socket.on('connect', function(){ // this listens to the connect event each time a user is connected
   // emmitting joint events (event only to one room)
   var params = {
       room: group,
@@ -64,7 +72,29 @@ $(document).ready(function(){
 
 
   socket.on('usersList', function(data){ // the users argument is from the client side the array of the users
+
     console.log(data);
+    var users = data.users;
+    console.log(users.length );
+    if (users.length === 1){
+      //// do nothing
+    } else if (users.length === 2){
+
+      StartIframe();
+      var sender = document.getElementById("username").value;
+      var room = document.getElementById("groupName").value;
+
+      socket.emit('trialData', {rules, examples,
+        test_cases, rule_names, rand_trial,
+        rand_counter, sender, room});
+
+      // parent.document.getElementById('game').style.visibility = "visible";
+      // var iframe = document.getElementById("game_frame");
+      // if (iframe) {
+      //     var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+      //     iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
+      // }
+    }
     params = data.params;
     users = data.users;
 
@@ -171,7 +201,6 @@ $(document).ready(function(){
     $('#comprehension_quiz').hide();
     $('#game_frame').show();
   });
-
 });
 //////////////////////////////////////////////
 //////////////////////////////////////////////

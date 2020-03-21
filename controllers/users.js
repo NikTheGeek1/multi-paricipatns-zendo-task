@@ -10,7 +10,7 @@ const User = require('../models/user'); // fetching the userSchema in the user m
 // and probably more
 
 // this will make the function available to other files
-module.exports = function(_, generateRoom){
+module.exports = function(_, roomFunctions){
 
     return {
       SetRouting: function(router){
@@ -21,6 +21,7 @@ module.exports = function(_, generateRoom){
 
       getSignUp:function(req, res){
         //console.log(req.flash('error')) // this shouldn't be an empty list, check this when u can
+
         return res.render('signup', {messages: req.flash('error'), hasErrors: req.flash('error').length > 0}) // renders a file from the views folder along side with an object
       },
       postSignUp: function(req, res){
@@ -35,32 +36,11 @@ module.exports = function(_, generateRoom){
           if (err)return handleError(err);
         });
 
-        // check how many participants are in the current room
-        var roomsOjb = io.sockets.adapter.rooms;
-        var allRooms = Object.keys(roomsOjb);
-        var rooms = [];
-        allRooms.forEach(function(el, i){
-          if(el.length === 5){rooms.push(el)}
-        });
+        var roomDetails = roomFunctions.main(io);
+        console.log(roomDetails);
+        var room = roomDetails["roomToGetIn"];
 
-        var booleanRooms = [];// an arrary with true and false
-        _.forEach(rooms, function(room, i) {
-        var clients = io.sockets.adapter.rooms[room];
-        if(clients.length === 1){
-            booleanRooms.push(true); // true if there is only 1 participant in the room
-          }else if (clients.length === 2){
-            booleanRooms.push(false); // false if there are 2 participants in the room
-          }
-        });
 
-        const idx_av_room = booleanRooms.indexOf(true); // idex of available room
-        console.log(roomsOjb);
-        console.log("rooms: "+rooms +"\nbooleanRooms: "+booleanRooms+"\nidx_av_room: "+idx_av_room);
-        if (idx_av_room === -1){ // if there is no available room, create one
-            var room = generateRoom.makeroom(5);
-        }else{// if there is an available room
-          var room = rooms[idx_av_room];
-        }
         req.session.username = req.body.username;
         return  res.redirect('/group/'+room);
       }

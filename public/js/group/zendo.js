@@ -1,3 +1,5 @@
+//$(document).ready(function(){
+
 //////////////////////////////////////////
 //THIS CONTAINS THE JAVASCRIPT FOR A TRIAL
 //////////////////////////////////////////
@@ -50,27 +52,30 @@ b2PolygonShape  = Box2D.Collision.Shapes.b2PolygonShape,
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 
-function startIframeORgetIframe(){
-
-  if (parent.users.length == 1){
-    //// do nothing
-  } else if (parent.users.length == 2){
-
-    parent.StartIframe();
-    var sender = parent.document.getElementById("username").value;
-    var room = parent.document.getElementById("groupName").value;
-    parent.socket.emit('trialData', {rules:parent.rules, examples:parent.examples,
-      test_cases:parent.test_cases, rule_names:parent.rule_names, rand_trial:parent.rand_trial,
-      rand_counter:parent.rand_counter, params:parent.params, sender:sender, room:room});
-
-    parent.document.getElementById('game').style.visibility = "visible";
-    var iframe = document.getElementById("game_frame");
-    if (iframe) {
-        var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-        iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
-    }
-  }
-};
+// function startIframeORgetIframe(){
+//   debugger
+//   console.log(top.users.length );
+//   if (top.users.length === 1){
+//     //// do nothing
+//   } else if (top.users.length === 2){
+//
+//
+//     top.StartIframe();
+//     var sender = parent.document.getElementById("username").value;
+//     var room = parent.document.getElementById("groupName").value;
+//
+//     parent.socket.emit('trialData', {rules:parent.rules, examples:parent.examples,
+//       test_cases:parent.test_cases, rule_names:parent.rule_names, rand_trial:parent.rand_trial,
+//       rand_counter:parent.rand_counter, params:parent.params, sender:sender, room:room});
+//
+//     // parent.document.getElementById('game').style.visibility = "visible";
+//     // var iframe = document.getElementById("game_frame");
+//     // if (iframe) {
+//     //     var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+//     //     iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
+//     // }
+//   }
+// };
 
 function Start(fun, ss, tt, rn, counterbalance)
 {
@@ -1214,10 +1219,10 @@ function RemoveMessage(pointer)
 
 function Continue(e)
 {
-  var height = stage.stageHeight; // dimensions of the iframe
-  var width = stage.stageWidth;
-  console.log(height);
-  console.log(width);
+
+
+  var height = Math.round(stage.stageHeight); // dimensions of the iframe
+  var width = Math.round(stage.stageWidth);
   var bd = BitmapData.empty(width, height); // function from ivank package, creates an empty 500 by 800 thing
   bd.draw(stage); // drawing the stage
   var rawData = bd.getPixels(new Rectangle(0,0,width,height)); // get pixels from bd and take out rectanlge with the dimensions, again both functions
@@ -1225,6 +1230,7 @@ function Continue(e)
   // var newCanvas = document.getElementById('copy');
   var newCanvas = document.createElement("CANVAS");
   // newCanvas.id = ('copy')
+
   newCanvas.width = width;
   newCanvas.height = height;
   newCanvas.style.display = "none;";

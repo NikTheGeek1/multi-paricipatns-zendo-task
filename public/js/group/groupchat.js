@@ -20,14 +20,16 @@ $(document).ready(function(){
     test_cases = data.test_cases;
     rule_names = data.rule_names;
     rand_counter = data.rand_counter;
+    posit_ix = data.posit_ix;
 
     var iframe = document.getElementById("game_frame");
     document.getElementById('game').style.visibility = "visible";
+    document.getElementById('waiting_area').style.display = "none";
 
     if (iframe) {
         var iframeContent = (iframe.contentWindow || iframe.contentDocument);
         try {
-          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
+          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix);
         }
         catch(err) {
 
@@ -37,8 +39,18 @@ $(document).ready(function(){
 
   } // closing of if statement
 
+  // send the name of the first player to the second player
+  socket.emit('user1Name', {username: data.sender, room: data.room});
+
   });
 
+
+  // listening for player's 1 username (only player two receives it)
+  socket.on('user1NameToUser2', name => {
+    otherUser = name;// this is the name of the other player, we need to
+    // define it here so we can have it later on
+    parent.document.getElementById("user2-other-name").innerHTML = name;
+  });
   /////////////////////////////////////////////////
   // IMPORTANT VARIABLES (need to make this clearer)
   //////////////////////////////////////////////////
@@ -49,10 +61,27 @@ $(document).ready(function(){
   //////////////////////////////////////////////////
 // grabing data from the canvas and adding a print screened image
   socket.on('canvasDataBackToClient', (data)=>{
-    //debugger
-    var image = document.getElementById('neighbour-image');
-    image.src = data.message;
-    image.style.display = "inline-block";
+    who_finished = data.who_finished;
+    if (who_finished.length === 1){
+      // put image of what the player did to the OTHER section of user 2
+      var otherImageUser2 = document.getElementById('other-image-user2');
+      otherImageUser2.src = data.message;
+      document.getElementById('images-user2').style.display = "block";
+    }
+    if (who_finished.length === 2){
+      // put image of what they did to the OTHER section of user 1
+      var otherImageUser1 = document.getElementById('other-image-user1');
+      otherImageUser1.src = data.message;
+      // hide waiting area
+      document.getElementById('waiting-area-after-trial').style.display = "none";
+
+      // make the division with the appropriate images visible
+      document.getElementById('images-user1').style.display = "block";
+      // also make the whole division for the images visible
+      document.getElementById('images-div').style.display = "inline-block";
+
+    }
+
   });
 
   socket.on('connect', function(){ // this listens to the connect event each time a user is connected
@@ -71,29 +100,39 @@ $(document).ready(function(){
 
 
   socket.on('usersList', function(data){ // the users argument is from the client side the array of the users
-
-    console.log(data);
     var users = data.users;
-    console.log(users.length );
     if (users.length === 1){
-      //// do nothing
+      document.getElementById('game').style.visibility = "hidden";
+      document.getElementById('waiting_area').style.display = "block";
+      // refreshing iframe too so we will start from the beginning
+      var iframe = document.getElementById("game_frame");
+      var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+      iframeContent.location.reload();
     } else if (users.length === 2){
+      // only player 1 will ever reach that point
+      // if there are two users, get the data game for the trial
+      // and emmit it back to the server
+      StartIframe(); // getting data
+      // these are data from inside zendo. The randomised positions of the prior posterior answers
+      var posit_ix = [8,9,10,11,12,13,14,15];
+      var posit_ix = _.shuffle(posit_ix);
 
-      StartIframe();
       var sender = document.getElementById("username").value;
       var room = document.getElementById("groupName").value;
 
+      otherUser = sender; // this is the name of the other player, we need to
+      // define it here so we can have it later on
+      // playing sound
+      var snd = new Audio("data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=");
+      $.notify("User: " +data.params.username+ "has just joined in!", "success");
+      snd.play();
+      parent.document.getElementById("user1-other-name").innerHTML = data.params.username;
+
+
       socket.emit('trialData', {rules, examples,
         test_cases, rule_names, rand_trial,
-        rand_counter, sender, room});
-
-      // parent.document.getElementById('game').style.visibility = "visible";
-      // var iframe = document.getElementById("game_frame");
-      // if (iframe) {
-      //     var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-      //     iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
-      // }
-    }
+        rand_counter, posit_ix, sender, room});
+    }//closing of else if
     params = data.params;
     users = data.users;
 

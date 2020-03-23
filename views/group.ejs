@@ -26,6 +26,7 @@
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="http://lib.ivank.net/ivank.js"></script>
     <script src="/js/lib/underscore-min.js" type="text/javascript"></script>
+    <script src="/js/lib/notify.min.js" type="text/javascript"></script>
 
     <!-- Initial Scripts -->
     <script src="/js/group/rules.js"></script>
@@ -40,13 +41,92 @@
 
 <!-- Waiting for particiant division -->
 <div id="waiting_area">
-  Waiting for another participant
+  Hey <%= username %>, thank you for joining our experiment! Please enjoy this
+  cute kitten while waiting for another participant to join :) <br><br>
+  <div align=center>
+      <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
+          <source src = "/movies/cat_vid.mp4" type="video/mp4">
+          <p>Sorry.  If this video wont play you wont be able to complete the experiment.</p>
+      </video>
+  </div>
 </div>
 
   <!-- GAME FRAME -->
   <div id="game" style="visibility:hidden">
     <iframe src="/zendo_iframe.html" width=800 height=500 id="game_frame" name="game_frame" tabindex="0"></iframe>
   </div>
+
+  <!-- ########################## Waiting area for the one who finishes first ######################### -->
+<div id="waiting-area-after-trial" style="display:none">
+  Please wait until <strong id = "UserWhoFinishesFirstName"></strong> finishes too.
+
+</div>
+
+
+<!-- ########################## IMAGES FOR NEIGHBOURS ######################### -->
+<div id="images-div" style="display:none">
+  <!-- NEIGHBOUR 1 (what the guy who finished first see) -->
+  <div class="neighb-images" id = "images-user1" style="display:none">
+    <!-- You side -->
+    <div class="imagesDivisions" id = "you-imagesDivisions-1">
+      <!-- Title -->
+      <div class="image-title">
+        These are your choices<br>
+      </div>
+
+      <div class="image-division" >
+        <!-- image -->
+        <img id="you-image-user1" class = "res-image" width="800px" height="500px">
+      </div>
+    </div>
+
+    <!-- Other side -->
+    <div class="imagesDivisions" id = "other-imagesDivisions-1">
+      <!-- Title -->
+      <div class="image-title">
+        These are <strong id = "user1-other-name"></strong>'s choices <br>
+      </div>
+
+      <!-- image -->
+      <div class="image-division">
+        <img id="other-image-user1" class = "res-image" width="800px" height="500px">
+      </div>
+    </div>
+
+
+  </div>
+
+
+  <!-- NEIGHBOUR 2 (what the guy who finished second see) -->
+  <div class="neighb-image" id = "images-user2" style="display:none">
+    <!-- You side -->
+      <div class="imagesDivisions" id = "you-imagesDivisions-2">
+        <!-- Title -->
+        <div class="image-title">
+          These are your choices<br>
+        </div>
+
+        <div class="image-division" >
+          <!-- image -->
+          <img id="you-image-user2" class = "res-image" width="800px" height="500px">
+        </div>
+      </div>
+
+    <!-- Other side -->
+      <div class="imagesDivisions" id = "other-imagesDivisions-2">
+        <!-- Title -->
+        <div class="image-title">
+          These are <strong id = "user2-other-name"></strong>'s choices <br>
+        </div>
+
+          <div class="image-division">
+            <!-- image -->
+            <img id="other-image-user2" class = "res-image" width="800px" height="500px">
+          </div>
+      </div>
+
+  </div>
+</div>
 
 
   <img src="" id="neighbour-image" width=800 height=500 style="display:none">

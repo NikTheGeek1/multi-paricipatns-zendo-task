@@ -4,6 +4,7 @@ module.exports = function(io, Users){
   users = new Users(); // the new keyword creates a new constructor (instance in python lang?)
   user_names = {}
 
+  who_finished = {};
 
 
 
@@ -14,8 +15,8 @@ module.exports = function(io, Users){
     // Getting trial data from client
     /////////////////////////////////////////
     socket.on('trialData', data => {
-
       const room = data.room;
+      who_finished[room] = []; // initialising here the who_finished array to use it later at the canvas message
       io.to(room).emit('trialDataBackToClient', data);
     });
     /////////////////////////////////////////
@@ -26,7 +27,12 @@ module.exports = function(io, Users){
           const sender = data.sender;
           const message = data.dataURL;
           const room = data.room;
+          // adding who finished in the room
+          who_finished[room].push(sender);
+          var who_finished_inRoom = who_finished[room];
           socket.broadcast.to(room).emit('canvasDataBackToClient',{
+                  // who finished
+                  who_finished: who_finished_inRoom,
                   //The sender's username
                   sender : data.sender,
                   //Message sent to receiver
@@ -38,7 +44,11 @@ module.exports = function(io, Users){
 
 
 
-
+    // listening for user's 1 name
+    socket.on('user1Name', data => {
+      // sending the name back to user 2 so they can put it on the site
+      socket.broadcast.to(data.room).emit('user1NameToUser2', data.username);
+    });
 
 
     // listenning to the joint event coming from the client
@@ -46,7 +56,6 @@ module.exports = function(io, Users){
       socket.join(params.room);// this method allows users to connect to a particular channel, takes argument room name
       users.AddUserData(socket.id, params.username, params.room);
       console.log('User '+params.username+' has joined room '+ params.room); // this will be displayed to the terminal
-
       socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
 
 

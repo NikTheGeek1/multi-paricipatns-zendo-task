@@ -6,7 +6,17 @@ body {
     background: #eeeeee;
 }
 
+.image-division {
+width: 800px;
+height: 200px;
+overflow: hidden;
+position: relative;
+}
 
+.res-image {
+  position: absolute;
+  top: -235px;
+}
 h1 {
     font-size: 38px;
     color: #5C5C5B;
@@ -24,10 +34,31 @@ h3 {
     color: #333;
 }
 
-.navbar{
-    background: #4aa1f3;
+.imagesDivisions {
+  display: inline-block;
+  width: 400px;
 }
-
+.image-division {
+  width: 390px;
+}
+.image-title {
+  text-align: center;
+}
+#images-div {
+  width: 900px;
+}
+#other-imagesDivisions-2 {
+  border:5px solid red;
+}
+#you-imagesDivisions-2 {
+  border:5px solid green
+}
+#other-imagesDivisions-1 {
+  border:5px solid red;
+}
+#you-imagesDivisions-1 {
+  border:5px solid green
+}
 .navbar-default .navbar-brand {
     color: #fff;
     font-size: 30px;

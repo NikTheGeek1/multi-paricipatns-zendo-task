@@ -47,17 +47,19 @@ function StartIframe2()
     examples = zendo_cases[rand_trial].t.slice(0,1);
     test_cases = zendo_cases[rand_trial].t.slice(1).concat(zendo_cases[rand_trial].f.slice(1));
 
-//     var iframe = document.getElementById("game_frame");
-//
-//     if (iframe) {
-//         var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-//         console.log('Starting iframe');
-//         iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
-//     }
+
 }
 
-function description_phase()
+function posterior_phase()
 {
-    document.getElementById('game_frame').src = document.getElementById('game_frame').src;
-    StartIframe();
+  document.getElementById('game').style.display = "block";
+  document.getElementById('game_frame').src = document.getElementById('game_frame').src;
+
+  var iframe = document.getElementById("game_frame");
+  if (iframe) {
+      var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+      console.log('Starting iframe Posterior phase');
+    //iframeContent.Start_posterior();
+  }
+
 }

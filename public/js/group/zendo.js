@@ -34,13 +34,13 @@ var test_count = 0;
 var n_tests = 8;
 var phase = 0;
 var selected = [false, false, false, false, false, false, false,false];
+var selectedPost = [false, false, false, false, false, false, false,false];
 var epsilon = Math.PI/6;
 var effect;
 var eff_time = 2000;//0;//How long to sparkle for when you test
 var rule_name = "Buddah"; //The default
 
-var posit_ix = [8,9,10,11,12,13,14,15];
-var posit_ix = _.shuffle(posit_ix);
+
 
 //Declaring the Box2d functions I use
 var   b2Vec2      = Box2D.Common.Math.b2Vec2,
@@ -77,9 +77,46 @@ b2ContactListener = Box2D.Dynamics.b2ContactListener;
 //   }
 // };
 
-function Start(fun, ss, tt, rn, counterbalance)
-{
+function Start_posterior(){
+  //stage = new Stage("c");
+  phase = 3;
 
+  btn.visible = false;
+  cbtn.visible =false;
+
+  parent.d3.select("#prompt_tb").html(parent.prompt_phase3);
+
+  for (var i=0; i<piece_buttons.length; i++)
+      {
+          piece_buttons[i].visible = false;
+      }
+
+      // for (var i=0; i<trial_pics.length; i++)
+      // {
+      // 	stage.removeChild(trial_pics[i]);
+      // }
+      // trial_pics = [];
+      console.log(test_trials);
+      for (var i=0; i<test_trials.length; i++)
+      {
+          trialdata.push(test_trials[i])
+        DrawHistory(trialdata, true, phase);
+      }
+debugger
+      var t1 = new TextField();
+      t1.selectable = false; // default is true
+      t1.setTextFormat(f4);
+      t1.text = "Which of the arrangements below emit " + rule_name +  " waves?";
+      t1.width = t1.textWidth;
+      t1.height = t1.textHeight;
+      stage.addChild(t1);
+      t1.x = stage.stageWidth/2 - t1.textWidth/2;
+      t1.y = stage.stageHeight*0.425;
+}
+
+function Start(fun, ss, tt, rn, counterbalance, posit_ix_)
+{
+    posit_ix = posit_ix_;
     //Create the stage
     stage = new Stage("c");
     CurrentRule = parent.eval(fun);//Set the rule up globally (check it works)
@@ -238,6 +275,43 @@ function Start(fun, ss, tt, rn, counterbalance)
     cbtn.addEventListener(MouseEvent.MOUSE_OVER, onMOv);
     cbtn.addEventListener(MouseEvent.MOUSE_OUT , onMOu);
     cbtn.visible = false;
+
+
+    ////////////////////
+    //Add a Continue button // for the posterior
+    ////////////////////
+    cbtnPost = new Sprite();
+
+    cbtnPost.graphics.beginFill(0x000000, 1);
+    cbtnPost.graphics.drawRoundRect(-1.75*half_ratio, -.5*half_ratio, 3.5*half_ratio, half_ratio, 6, 6);
+    cbtnPost.graphics.endFill();
+
+    cbtnPost.graphics.beginFill(0xeeeeee, 1);
+    cbtnPost.graphics.drawRoundRect(-1.75*half_ratio+2, -.5*half_ratio + 1, 3.5*half_ratio-4, half_ratio-2, 3, 3);
+    cbtnPost.graphics.endFill();
+
+    var t3 = new TextField();
+    t3.selectable = false; // default is true
+    t3.setTextFormat(f1);
+    t3.text = 'Continue';
+    t3.width = t3.textWidth;
+    t3.height = t3.textHeight;
+    cbtnPost.addChild(t3);
+    t3.x = -t3.textWidth / 2;
+    t3.y = -t3.textHeight / 2;//-25;
+
+    cbtnPost.buttonMode = true;
+
+    stage.addChild(cbtnPost);
+
+    cbtnPost.x = stage.stageWidth /2 - t1.textWidth/2;//stage.stageWidth * 0.90;//
+    cbtnPost.y = stage.stageHeight * 0.93;
+
+    cbtnPost.addEventListener(MouseEvent.CLICK, ContinuePosterior);
+    cbtnPost.addEventListener(MouseEvent.MOUSE_OVER, onMOv);
+    cbtnPost.addEventListener(MouseEvent.MOUSE_OUT , onMOu);
+    cbtnPost.visible = false;
+
 
     ///////////////////
     //Create the pieces
@@ -770,6 +844,38 @@ function SelectOption(e)
 	}
 }
 
+
+
+function SelectOptionPosterior(e)
+{
+	console.log('selected option', e.target, e.target.option_ix);
+	if (selectedPost[e.target.option_ix] === false)
+	{
+		selectedPost[e.target.option_ix] = true;
+		e.target.alpha = 1;
+	} else if (selectedPost[e.target.option_ix] === true)
+	{
+		selectedPost[e.target.option_ix] = false;
+		e.target.alpha = 0;
+	}
+
+	var n_selected = 0;
+
+	for (var i=0; i<selectedPost.length; i++)
+	{
+		n_selected = n_selected + selectedPost[i];
+	}
+
+	if (n_selected>0 & n_selected<8)
+	{
+		cbtnPost.visible = true;
+
+	} else {
+		cbtnPost.visible = false;
+	}
+}
+
+
 //////////////
 //Store Contact
 //////////////
@@ -1175,6 +1281,7 @@ function DrawHistory(td, bn, phase)
 	    overlay.graphics.endFill();
 		overlay.option_ix = t-8;
 		overlay.alpha = 0;
+    console.log(overlay);
 		trial_pics[t].addChild(overlay);
 
         stage.addChild(trial_pics[t]);
@@ -1191,7 +1298,6 @@ function DrawHistory(td, bn, phase)
         trial_pics[t].y=Math.floor(posit_ix[t-8]/4)*((stage.stageHeight*frame_height)/4) + stage.stageHeight/8;
 
 	    trial_pics[t].addEventListener(MouseEvent.CLICK, SelectOption);
-
     }
 
 }//Draw history
@@ -1206,6 +1312,22 @@ function DrawHistory(td, bn, phase)
 // {
 //     console.log(t3.text.length);
 // }
+function preparingForPosterior(){
+  for (var i = 0; i < trial_pics.length-8; i++) {
+    trial_pics[i].visible = false;
+  }
+  // remove the select overlay
+  for (var i = 8; i < trial_pics.length; i++) {
+    var numCh = trial_pics[i].numChildren
+    trial_pics[i]._children[numCh-1].alpha = 0;
+    //trial_pics[i].removeChild(trial_pics[i]._children[numCh-1]);
+    trial_pics[i].removeEventListener(MouseEvent.CLICK, SelectOption);
+    trial_pics[i].addEventListener(MouseEvent.CLICK, SelectOptionPosterior);
+  }
+    // hide button
+    cbtn.visible = false;
+}
+
 
 function AddMessage(pointer)
 {
@@ -1219,37 +1341,33 @@ function RemoveMessage(pointer)
 
 function Continue(e)
 {
-
-
+  // getting screenshot of the canva
   var height = Math.round(stage.stageHeight); // dimensions of the iframe
   var width = Math.round(stage.stageWidth);
-  var bd = BitmapData.empty(width, height); // function from ivank package, creates an empty 500 by 800 thing
-  bd.draw(stage); // drawing the stage
-  var rawData = bd.getPixels(new Rectangle(0,0,width,height)); // get pixels from bd and take out rectanlge with the dimensions, again both functions
-  // from ivank.js  defined - rawData is in format of data from 0 to 8
-  // var newCanvas = document.getElementById('copy');
-  var newCanvas = document.createElement("CANVAS");
-  // newCanvas.id = ('copy')
+  var dataURL = screenShot(width, height)
+  // paste screenshot to the YOU side of the user
+  pasteScreenShot(dataURL);
 
-  newCanvas.width = width;
-  newCanvas.height = height;
-  newCanvas.style.display = "none;";
-  var ctx = newCanvas.getContext("2d");
-  var imgData = ctx.createImageData(width, height); // width x height
-  var data = imgData.data;
-  // copy img byte-per-byte into our ImageData
-  for (var b = 0, len = height * width * 4 ; b < len; b++) {
-      data[b] = rawData[b];
-  }
-  // now we can draw our imagedata onto the canvas
-  ctx.putImageData(imgData, 0, 0);
-
+  // sending data to client
   var sender = parent.document.getElementById("username").value;
   var room = parent.document.getElementById("groupName").value;
-
-  var dataURL = newCanvas.toDataURL();
   parent.socket.emit('canvasData', {sender, room, dataURL});
 
+  // destroy  the upper pics and removing the old overlay and create a new one
+  preparingForPosterior();
 
-	parent.description_phase();
+  // hidding task
+  parent.document.getElementById("game").style.display = "none";
+
+  // updating images divisions width from here
+  var images = parent.document.getElementsByClassName('res-image');
+  for (var i = 0; i < images.length; i++) {
+    images[i].width = 400;
+  }
+
+}
+
+
+function ContinuePosterior(e){ // reference from the button continue to posterior
+1+1;//
 }

@@ -1312,6 +1312,7 @@ function DrawHistory(td, bn, phase)
 // {
 //     console.log(t3.text.length);
 // }
+
 function preparingForPosterior(){
   for (var i = 0; i < trial_pics.length-8; i++) {
     trial_pics[i].visible = false;
@@ -1327,7 +1328,6 @@ function preparingForPosterior(){
     // hide button
     cbtn.visible = false;
 }
-
 
 function AddMessage(pointer)
 {

@@ -1,5 +1,5 @@
 function pasteScreenShot(dataURL) {
-  if(typeof(parent.who_finished )=== "undefined"){ // if this is the first to finish the game
+  if(typeof(parent.who_finished )== "undefined"){ // if this is the first to finish the game
     // put image of what the player did to the YOU section of user 1
     var youImageUser1 = parent.document.getElementById('you-image-user1');
     youImageUser1.src = dataURL;

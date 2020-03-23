@@ -8,7 +8,7 @@ function pasteScreenShot(dataURL) {
 
 
     // Add the waiting area here
-    parent.document.getElementById('waiting-area-after-trial').style.display = "inline-block";
+    parent.document.getElementById('waiting-area-after-trial').style.display = "block";
     parent.document.getElementById('UserWhoFinishesFirstName').innerHTML = parent.otherUser;
 
   }else{ // this is the second to finish the game
@@ -17,7 +17,7 @@ function pasteScreenShot(dataURL) {
     youImageUser2.src = dataURL;
     parent.document.getElementById('images-user2').style.display = "block";
 
-    parent.document.getElementById('images-div').style.display = "inline-block";
+    parent.document.getElementById('images-div').style.display = "block";
 
   }
 

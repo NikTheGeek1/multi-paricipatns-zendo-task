@@ -84,7 +84,7 @@ function Start_posterior(){
   btn.visible = false;
   cbtn.visible =false;
 
-  parent.d3.select("#prompt_tb").html(parent.prompt_phase3);
+  parent.d3.select("#query2").html(parent.prompt_phase3);
 
   for (var i=0; i<piece_buttons.length; i++)
       {
@@ -415,7 +415,7 @@ function NextTest()
 		///////////////////////////////////////////////////
 		phase = 1;
 
-		parent.d3.select("#prompt_tb").html(parent.prompt_phase1);
+		parent.d3.select("#query2").html(parent.prompt_phase1);
 
 		stage.addEventListener(Event.ENTER_FRAME, onEF);
 
@@ -440,7 +440,7 @@ function NextTest()
 		////////////////////
 		phase = 2;
 
-		parent.d3.select("#prompt_tb").html(parent.prompt_phase2);
+		parent.d3.select("#query2").html(parent.prompt_phase2);
 
 		for (var i=0; i<piece_buttons.length; i++)
         {
@@ -472,7 +472,7 @@ function NextTest()
 		btn.visible = false;
 		cbtn.visible =false;
 
-		parent.d3.select("#prompt_tb").html(parent.prompt_phase3);
+		parent.d3.select("#query2").html(parent.prompt_phase3);
 
 		for (var i=0; i<piece_buttons.length; i++)
         {
@@ -1340,7 +1340,7 @@ function pasteScreenShot(dataURL) {
 
 
     // Add the waiting area here
-    parent.document.getElementById('waiting-area-after-trial').style.display = "inline-block";
+    parent.document.getElementById('waiting-area-after-trial').style.display = "block";
     parent.document.getElementById('UserWhoFinishesFirstName').innerHTML = parent.otherUser;
 
   }else{ // this is the second to finish the game
@@ -1349,7 +1349,7 @@ function pasteScreenShot(dataURL) {
     youImageUser2.src = dataURL;
     parent.document.getElementById('images-user2').style.display = "block";
 
-    parent.document.getElementById('images-div').style.display = "inline-block";
+    parent.document.getElementById('images-div').style.display = "block";
 
   }
 

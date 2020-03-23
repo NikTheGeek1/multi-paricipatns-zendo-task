@@ -38,31 +38,6 @@
 <input type="hidden" name="" id="groupName" value="<%= groupName %>">
 <!-- PARTICIPANT NAME -->
 <input type="hidden" name="" id="username" value="<%= username %>">
-
-<!-- Waiting for particiant division -->
-<div id="waiting_area">
-  Hey <%= username %>, thank you for joining our experiment! Please enjoy this
-  cute kitten while waiting for another participant to join :) <br><br>
-  <div align=center>
-      <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
-          <source src = "/movies/cat_vid.mp4" type="video/mp4">
-          <p>Sorry.  If this video wont play you wont be able to complete the experiment.</p>
-      </video>
-  </div>
-</div>
-
-  <!-- GAME FRAME -->
-  <div id="game" style="visibility:hidden">
-    <iframe src="/zendo_iframe.html" width=800 height=500 id="game_frame" name="game_frame" tabindex="0"></iframe>
-  </div>
-
-  <!-- ########################## Waiting area for the one who finishes first ######################### -->
-<div id="waiting-area-after-trial" style="display:none">
-  Please wait until <strong id = "UserWhoFinishesFirstName"></strong> finishes too.
-
-</div>
-
-
 <!-- ########################## IMAGES FOR NEIGHBOURS ######################### -->
 <div id="images-div" style="display:none">
   <!-- NEIGHBOUR 1 (what the guy who finished first see) -->
@@ -127,15 +102,30 @@
 
   </div>
 </div>
-
-
-  <img src="" id="neighbour-image" width=800 height=500 style="display:none">
-
-
-
-
-<div id="query2">
+<!-- Waiting for particiant division -->
+<div id="waiting_area">
+  Hey <%= username %>, thank you for joining our experiment! Please enjoy this
+  cute kitten while waiting for another participant to join :) <br><br>
+  <div align=center>
+      <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
+          <source src = "/movies/cat_vid.mp4" type="video/mp4">
+          <p>Sorry.  If this video wont play you wont be able to complete the experiment.</p>
+      </video>
+  </div>
 </div>
+<!-- ########################## Waiting area for the one who finishes first ######################### -->
+<div id="waiting-area-after-trial" style="display:none">
+Please wait until <strong id = "UserWhoFinishesFirstName"></strong> finishes too.
+
+</div>
+
+  <!-- GAME FRAME -->
+  <div id="game" style="visibility:hidden">
+    <iframe src="/zendo_iframe.html" width=800 height=500 id="game_frame" name="game_frame" tabindex="0"></iframe>
+    <div id="query2">
+    </div>
+  </div>
+
 
 
 

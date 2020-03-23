@@ -21,6 +21,23 @@ $(document).ready(function(){
     rule_names = data.rule_names;
     rand_counter = data.rand_counter;
     posit_ix = data.posit_ix;
+// generate the texts for query2 for this user (the other has access to StartIframe2)
+    prompt_phase1 = '<p id="prompt2" align="left">&#8226 Here are some objects.<br>' +
+                '&#8226 Click "<b>Test</b>" to see if they emit <b>'  +
+                    rule_names[rand_trial] + '</b> waves.</p>';
+
+    prompt_phase2 = '<p id="prompt2" align="left">&#8226 Now choose your own arrangement.  Click on the squares at the bottom to add objects to the scene.<br>' +
+        '&#8226 Once added, <b>left hold click</b> on objects to move them, use "<b>Z</b>"/"<b>X</b>" to rotate, and <b>right click</b> to remove.<br>' +
+        '&#8226 When you have the arrangement you want, click "<b>Test</b>" to see if it emits <b>'  +
+            rule_names[rand_trial] + '</b> waves.<br>' +
+        '&#8226 Outcomes of your previous tests are shown at the top.  You get <b>8</b> tests in total.<br>' +
+        '&#8226 A yellow star means your arrangement did follow the rule,  an empty star means it did not.</p>';
+
+    prompt_phase3 = '<p id="prompt2" align="left">&#8226 Here are 8 new arrangements<br>' +
+    '&#8226 Select which ones you think emit <b>'  +
+            rule_names[rand_trial] + '</b> waves<br>' +
+    '&#8226 You must select at least 1 and less than all 8.<b>';
+
 
     var iframe = document.getElementById("game_frame");
     document.getElementById('game').style.visibility = "visible";

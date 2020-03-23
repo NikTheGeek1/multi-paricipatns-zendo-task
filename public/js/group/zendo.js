@@ -414,7 +414,7 @@ function NextTest()
 		//Present initial configuration(s) without control
 		///////////////////////////////////////////////////
 		phase = 1;
-
+    
 		parent.d3.select("#query2").html(parent.prompt_phase1);
 
 		stage.addEventListener(Event.ENTER_FRAME, onEF);

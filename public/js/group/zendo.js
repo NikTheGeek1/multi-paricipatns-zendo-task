@@ -414,7 +414,7 @@ function NextTest()
 		//Present initial configuration(s) without control
 		///////////////////////////////////////////////////
 		phase = 1;
-    
+
 		parent.d3.select("#query2").html(parent.prompt_phase1);
 
 		stage.addEventListener(Event.ENTER_FRAME, onEF);
@@ -1331,24 +1331,27 @@ function preparingForPosterior(){
 /////////////////////// H E L P E R S    F U N C T I O N S
 // COPY THESE TO NEW FILES
 function pasteScreenShot(dataURL) {
-  if(typeof(parent.who_finished )=== "undefined"){ // if this is the first to finish the game
-    // put image of what the player did to the YOU section of user 1
-    var youImageUser1 = parent.document.getElementById('you-image-user1');
-    youImageUser1.src = dataURL;
+  players_info = parent.players_info;
+  var user_finished = parent.document.getElementById("username").value;// this will be the user who finished first
+  var user = players_info[user_finished][0]; // that's the info on whether the user is user1 or user2
+  // now we'll take the name of the other user (not the one who finished now)
+  var idx_OTHERfinished = Math.abs(Object.keys(players_info).indexOf(user_finished) - 1); // this formula will always give us the other number from 0 and 1. e.g if it's 0, it'll give us 1 etc
+  var user_OTHERfinished = Object.keys(players_info)[idx_OTHERfinished];
+  // put image of what the player did to the YOU section of user x
+  var youImageUserX = parent.document.getElementById('you-image-'+user);
+  youImageUserX.src = dataURL;
+  parent.document.getElementById('images-'+user).style.display = "block";
+  parent.document.getElementById(user+"-other-name").innerHTML = user_OTHERfinished; // this is the name of the user2
 
-    parent.document.getElementById('images-user1').style.display = "block";
 
+  if(typeof(parent.who_finished ) === "undefined"){ // if this is the first to finish the game
 
     // Add the waiting area here
     parent.document.getElementById('waiting-area-after-trial').style.display = "block";
-    parent.document.getElementById('UserWhoFinishesFirstName').innerHTML = parent.otherUser;
+    parent.document.getElementById('user-finished2').innerHTML = user_OTHERfinished;
 
   }else{ // this is the second to finish the game
-    // put image of what the player did to the YOU section of user 2
-    var youImageUser2 = parent.document.getElementById('you-image-user2');
-    youImageUser2.src = dataURL;
-    parent.document.getElementById('images-user2').style.display = "block";
-
+    //  displayes the image block only for themselves
     parent.document.getElementById('images-div').style.display = "block";
 
   }

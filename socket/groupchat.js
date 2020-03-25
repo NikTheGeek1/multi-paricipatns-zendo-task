@@ -44,11 +44,6 @@ module.exports = function(io, Users){
 
 
 
-    // listening for user's 1 name
-    socket.on('user1Name', data => {
-      // sending the name back to user 2 so they can put it on the site
-      socket.broadcast.to(data.room).emit('user1NameToUser2', data.username);
-    });
 
 
     // listenning to the joint event coming from the client

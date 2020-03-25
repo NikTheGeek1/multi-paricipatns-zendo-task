@@ -40,7 +40,9 @@ container.resolve(function(users, _, group){
     const app = express(); // this app is different than the other above. different variable space
     const server = http.createServer(app); // setting up our server. we might change this later
     // when we make use of socket.io
-    io = socketIO(server); // adding multiple sockets to the server
+    io = socketIO(server, {
+      //pingTimeout: 95000,
+    }); // adding multiple sockets to the server
     server.listen(process.env.PORT || 3000, function(users){ // firing up our server
       console.log('Listening on port 3000');
     });
@@ -85,7 +87,7 @@ container.resolve(function(users, _, group){
     //app.use(validator()); //validates user credentials etc
 
     app.use(session({ // allows to save sessions
-      secret: process.env.SECRET_KEY,
+      secret:process.env.SECRET_KEY,
       resave: true,
       saveUninitialized: true,
       saveInitialized: true,

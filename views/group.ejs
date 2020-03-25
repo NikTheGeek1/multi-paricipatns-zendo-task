@@ -40,7 +40,7 @@
 <input type="hidden" name="" id="username" value="<%= username %>">
 <!-- ########################## IMAGES FOR NEIGHBOURS ######################### -->
 <div id="images-div" style="display:none">
-  <!-- NEIGHBOUR 1 (what the guy who finished first see) -->
+  <!-- NEIGHBOUR 1 (what the guy who enters first see) -->
   <div class="neighb-images" id = "images-user1" style="display:none">
     <!-- You side -->
     <div class="imagesDivisions" id = "you-imagesDivisions-1">
@@ -72,7 +72,7 @@
   </div>
 
 
-  <!-- NEIGHBOUR 2 (what the guy who finished second see) -->
+  <!-- NEIGHBOUR 2 (what the guy who enters second see) -->
   <div class="neighb-image" id = "images-user2" style="display:none">
     <!-- You side -->
       <div class="imagesDivisions" id = "you-imagesDivisions-2">
@@ -101,23 +101,33 @@
       </div>
 
   </div>
+  <!--  Continue to Posterior div  -->
+  <div id="button-to-posterior-div">
+    <p>Press continue to continue</p>
+    <button id = "button-to-posterior" type="button" name="continue" ><span>Continue</span></button>
+  </div>
+
 </div>
+
+
 <!-- Waiting for particiant division -->
 <div id="waiting_area">
   Hey <%= username %>, thank you for joining our experiment! Please enjoy this
-  cute kitten while waiting for another participant to join :) <br><br>
+  cutie while waiting for another participant to join :) <br><br>
   <div align=center>
       <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
           <source src = "/movies/cat_vid.mp4" type="video/mp4">
-          <p>Sorry.  If this video wont play you wont be able to complete the experiment.</p>
       </video>
   </div>
 </div>
 <!-- ########################## Waiting area for the one who finishes first ######################### -->
 <div id="waiting-area-after-trial" style="display:none">
-Please wait until <strong id = "UserWhoFinishesFirstName"></strong> finishes too.
+Please wait until <strong id = "user-finished2"></strong> finishes too.
 
 </div>
+
+
+
 
   <!-- GAME FRAME -->
   <div id="game" style="visibility:hidden">

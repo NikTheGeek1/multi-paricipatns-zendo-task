@@ -16,6 +16,7 @@ $(document).ready(function(){
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{
     // parameters of the start function
+
     rules = data.rules;
     rand_trial = data.rand_trial;
     examples = data.examples;
@@ -23,26 +24,17 @@ $(document).ready(function(){
     rule_names = data.rule_names;
     rand_counter = data.rand_counter;
     posit_ix = data.posit_ix;
+    rand_counter_order = data.rand_counter_order;
+    trials_order = data.trials_order;
+    zendo_cases = data.zendo_cases;
+    prompt_phase1 = data.prompt_phase1;
+    prompt_phase2 = data.prompt_phase2;
+    prompt_phase3 = data.prompt_phase3;
+    trial_num = data.trial_num;
+
 
     // a global variable with the user names and details (who entered first)
     players_info = data.players_info;
-
-    // generate the texts for query2 for this user (the other has access to StartIframe2)
-    prompt_phase1 = '<p id="prompt2" align="left">&#8226 Here are some objects.<br>' +
-                '&#8226 Click "<b>Test</b>" to see if they emit <b>'  +
-                    rule_names[rand_trial] + '</b> waves.</p>';
-
-    prompt_phase2 = '<p id="prompt2" align="left">&#8226 Now choose your own arrangement.  Click on the squares at the bottom to add objects to the scene.<br>' +
-        '&#8226 Once added, <b>left hold click</b> on objects to move them, use "<b>Z</b>"/"<b>X</b>" to rotate, and <b>right click</b> to remove.<br>' +
-        '&#8226 When you have the arrangement you want, click "<b>Test</b>" to see if it emits <b>'  +
-            rule_names[rand_trial] + '</b> waves.<br>' +
-        '&#8226 Outcomes of your previous tests are shown at the top.  You get <b>8</b> tests in total.<br>' +
-        '&#8226 A yellow star means your arrangement did follow the rule,  an empty star means it did not.</p>';
-
-    prompt_phase3 = '<p id="prompt2" align="left">&#8226 Here are 8 new arrangements<br>' +
-    '&#8226 Select which ones you think emit <b>'  +
-            rule_names[rand_trial] + '</b> waves<br>' +
-    '&#8226 You must select at least 1 and less than all 8.<b>';
 
 
     var iframe = document.getElementById("game_frame");
@@ -53,7 +45,7 @@ $(document).ready(function(){
     if (iframe) {
         var iframeContent = (iframe.contentWindow || iframe.contentDocument);
         try {
-          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix);
+          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
         }
         catch(err) {
 
@@ -87,13 +79,13 @@ $(document).ready(function(){
     otherImageUserX.src = data.message;
     // also make the whole division for the images visible
 
-    if (who_finished.length === 2){
+    if (who_finished.length % 2 == 0){
       // here will enter only the player who finishes second
       // hide waiting area
       document.getElementById('waiting-area-after-trial').style.display = "none";
     }
     document.getElementById('images-div').style.display = "block";
-
+    $('#button-to-posterior-div').show();
   });
 
   socket.on('connect', function(){ // this listens to the connect event each time a user is connected
@@ -126,9 +118,7 @@ $(document).ready(function(){
       // if there are two users, get the data game for the trial
       // and emmit it back to the server
       StartIframe(); // getting data
-      // these are data from inside zendo. The randomised positions of the prior posterior answers
-      var posit_ix = [8,9,10,11,12,13,14,15];
-      var posit_ix = _.shuffle(posit_ix);
+
 
       var sender = document.getElementById("username").value; // this is the name of the player1
       var room = document.getElementById("groupName").value;
@@ -146,9 +136,22 @@ $(document).ready(function(){
 
 
 
-      socket.emit('trialData', {rules, examples,
-        test_cases, rule_names, rand_trial,
-        rand_counter, posit_ix, sender, room, players_info});
+      socket.emit('trialData', {
+        prompt_phase1,
+        prompt_phase2,
+        prompt_phase3,
+        rules,
+        examples,
+        test_cases,
+        rule_names,
+        rand_trial,
+        trials_order,
+        rand_counter_order,
+        zendo_cases,
+        rand_counter,
+        posit_ix,
+        trial_num,
+        sender, room, players_info});
     }//closing of else if
     params = data.params;
     users = data.users;
@@ -169,7 +172,7 @@ $(document).ready(function(){
     $('#button-to-posterior-div').hide();
     $('#game').show();
     document.getElementById('game').style.position = 'absolute';
-    document.getElementById('game').style.top = 100;
+    document.getElementById('game').style.top = "100px";
     document.getElementById('game').style.overflow = 'hidden';
     document.getElementById('game_frame').style.border = 'none';
 

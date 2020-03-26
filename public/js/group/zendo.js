@@ -52,77 +52,20 @@ b2PolygonShape  = Box2D.Collision.Shapes.b2PolygonShape,
 b2ContactListener = Box2D.Dynamics.b2ContactListener;
 
 
-// function startIframeORgetIframe(){
-//   debugger
-//   console.log(top.users.length );
-//   if (top.users.length === 1){
-//     //// do nothing
-//   } else if (top.users.length === 2){
-//
-//
-//     top.StartIframe();
-//     var sender = parent.document.getElementById("username").value;
-//     var room = parent.document.getElementById("groupName").value;
-//
-//     parent.socket.emit('trialData', {rules:parent.rules, examples:parent.examples,
-//       test_cases:parent.test_cases, rule_names:parent.rule_names, rand_trial:parent.rand_trial,
-//       rand_counter:parent.rand_counter, params:parent.params, sender:sender, room:room});
-//
-//     // parent.document.getElementById('game').style.visibility = "visible";
-//     // var iframe = document.getElementById("game_frame");
-//     // if (iframe) {
-//     //     var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-//     //     iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter);
-//     // }
-//   }
-// };
 
-function Start_posterior(){
-  //stage = new Stage("c");
-  phase = 3;
-
-  btn.visible = false;
-  cbtn.visible =false;
-
-  parent.d3.select("#query2").html(parent.prompt_phase3);
-
-  for (var i=0; i<piece_buttons.length; i++)
-      {
-          piece_buttons[i].visible = false;
-      }
-
-      // for (var i=0; i<trial_pics.length; i++)
-      // {
-      // 	stage.removeChild(trial_pics[i]);
-      // }
-      // trial_pics = [];
-      console.log(test_trials);
-      for (var i=0; i<test_trials.length; i++)
-      {
-          trialdata.push(test_trials[i])
-        DrawHistory(trialdata, true, phase);
-      }
-debugger
-      var t1 = new TextField();
-      t1.selectable = false; // default is true
-      t1.setTextFormat(f4);
-      t1.text = "Which of the arrangements below emit " + rule_name +  " waves?";
-      t1.width = t1.textWidth;
-      t1.height = t1.textHeight;
-      stage.addChild(t1);
-      t1.x = stage.stageWidth/2 - t1.textWidth/2;
-      t1.y = stage.stageHeight*0.425;
-}
-
-function Start(fun, ss, tt, rn, counterbalance, posit_ix_)
+function Start(fun, ss, tt, rn, counterbalance, posit_ix_, tr_count)
 {
+
+    trial_num = tr_count;
     posit_ix = posit_ix_;
     //Create the stage
     stage = new Stage("c");
+
     CurrentRule = parent.eval(fun);//Set the rule up globally (check it works)
+    console.log(CurrentRule);
     start_state = ss;
     test_trials = tt;
-	rule_name = rn;
+	  rule_name = rn;
 
     id_count = 0;//Make sure the id count is reset when you start a new trial
     test_count = 0;//0;
@@ -1066,7 +1009,6 @@ function TestDevice(e){
             }//Loop over cont over contacts for i
         }//Loop i over objects
 
-
 		trialdata.push({ids:ids, colours:colours, sizes:sizes, xpos:xposs, ypos:yposs, rotations:rotations, orientations:orientations,
             contact:contact, grounded:grounded});
 
@@ -1332,6 +1274,7 @@ function preparingForPosterior(){
 // COPY THESE TO NEW FILES
 function pasteScreenShot(dataURL) {
   players_info = parent.players_info;
+  var room = parent.document.getElementById("groupName").value;// this will be the user who finished first
   var user_finished = parent.document.getElementById("username").value;// this will be the user who finished first
   var user = players_info[user_finished][0]; // that's the info on whether the user is user1 or user2
   // now we'll take the name of the other user (not the one who finished now)
@@ -1342,9 +1285,8 @@ function pasteScreenShot(dataURL) {
   youImageUserX.src = dataURL;
   parent.document.getElementById('images-'+user).style.display = "block";
   parent.document.getElementById(user+"-other-name").innerHTML = user_OTHERfinished; // this is the name of the user2
-
-
-  if(typeof(parent.who_finished ) === "undefined"){ // if this is the first to finish the game
+  console.log(parent.who_finished);
+  if((typeof(parent.who_finished ) === "undefined") || parent.who_finished.length % 2 === 0 ){ // if this is the first to finish the trial
 
     // Add the waiting area here
     parent.document.getElementById('waiting-area-after-trial').style.display = "block";
@@ -1353,7 +1295,7 @@ function pasteScreenShot(dataURL) {
   }else{ // this is the second to finish the game
     //  displayes the image block only for themselves
     parent.document.getElementById('images-div').style.display = "block";
-
+    parent.who_finished = [];
   }
 
 }
@@ -1371,6 +1313,7 @@ function RemoveMessage(pointer)
 
 function Continue(e)
 {
+  
   // getting screenshot of the canva
   var height = Math.round(stage.stageHeight); // dimensions of the iframe
   var width = Math.round(stage.stageWidth);
@@ -1381,7 +1324,7 @@ function Continue(e)
   // sending data to client
   var sender = parent.document.getElementById("username").value;
   var room = parent.document.getElementById("groupName").value;
-  parent.socket.emit('canvasData', {sender, room, dataURL});
+  parent.socket.emit('canvasData', {sender, room, dataURL, trial_num});
 
   // destroy  the upper pics and removing the old overlay and create a new one
   preparingForPosterior();
@@ -1399,5 +1342,19 @@ function Continue(e)
 
 
 function ContinuePosterior(e){ // reference from the button continue to posterior
-1+1;//
+// saving the data
+// sending it to the server
+
+
+var sender = parent.document.getElementById("username").value;
+var room = parent.document.getElementById("groupName").value;
+// also add the selected values for prior and posterior
+// for some fucking weird reason trial_num is not defined in the scope of this function
+// but it is defined in the Continue function above. for that reason, i am sending the
+// trial_num variable to the SERVER from the Continue function
+parent.socket.emit('storeData', {trialdata, sender, room});
+
+
+
+parent.StartIframe2();
 }

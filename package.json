@@ -1,7 +1,7 @@
 {
   "name": "mutli-participants-zendo-task",
   "version": "1.0.0",
-  "description": "This is an experiment were 2 participants are taking part at the same time. It uses nodejs, socketio, express and more",
+  "description": "This is an experiment where 2 participants are taking part at the same time. It uses nodejs, socketio, express and more",
   "main": "index.js",
   "engines": {
     "node": "12.15.0",

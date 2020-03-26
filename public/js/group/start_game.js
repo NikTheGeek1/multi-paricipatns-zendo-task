@@ -2,10 +2,19 @@
 function StartIframe() {
   rules = ["Rule1", "Rule2", "Rule3", "Rule4", "Rule5", "Rule6", "Rule7", "Rule8", "Rule9", "Rule10"];
 
-    //rules = [Rule1, Rule2, Rule3, Rule4, Rule5, Rule6, Rule7, Rule8, Rule9, Rule10];
-    rule_names = ['Zeta' ,'Phi' ,'Upsilon' ,'Iota' ,'Kappa' ,'Omega' ,'Mu' ,'Nu' ,'Xi', 'Psi'];
-    // rule_names = ['Geosyog' ,'Plasill' ,'Bioyino' ,'Waratel' ,'Sepatoo' ,'Moderock' ,'Replitz' ,'Pegmode' ,'Mizule ', 'Lazap'];
+  //rules = [Rule1, Rule2, Rule3, Rule4, Rule5, Rule6, Rule7, Rule8, Rule9, Rule10];
+  rule_names = ['Zeta' ,'Phi' ,'Upsilon' ,'Iota' ,'Kappa' ,'Omega' ,'Mu' ,'Nu' ,'Xi', 'Psi'];
 
+  trials_order = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+  trials_order = _.shuffle(trials_order);
+
+  rand_counter_order = [0,1,2,3,4,5,6,7,8,9,10,11];
+  rand_counter_order = _.shuffle(rand_counter_order);
+
+
+  // these are data from inside zendo. The randomised positions of the prior posterior answers
+  posit_ix = [8,9,10,11,12,13,14,15];
+  posit_ix = _.shuffle(posit_ix);
 
     $.ajax({
         dataType: "json",
@@ -24,8 +33,10 @@ function StartIframe() {
 function StartIframe2()
 {
 
-    rand_trial = Math.floor(Math.random()*9);
-    rand_counter = Math.floor(Math.random()*11);
+    //rand_trial = Math.floor(Math.random()*9);
+    //rand_trial = trials_order[Math.floor(Math.random()*trials_order.length)];
+    rand_trial = trials_order.pop();
+    rand_counter = rand_counter_order.pop();
 
     prompt_phase1 = '<p id="prompt2" align="left">&#8226 Here are some objects.<br>' +
                 '&#8226 Click "<b>Test</b>" to see if they emit <b>'  +
@@ -47,19 +58,53 @@ function StartIframe2()
     examples = zendo_cases[rand_trial].t.slice(0,1);
     test_cases = zendo_cases[rand_trial].t.slice(1).concat(zendo_cases[rand_trial].f.slice(1));
 
+    // start iframe from here if this is not the first trial (if it's the first trial, iframe starts from groupchat)
+    trial_num = (10 - trials_order.length);
+    if(trial_num > 1){ // if the first trials is finished
+      console.log("Starting trial ", trial_num);
+      var room = document.getElementById('groupName');
+      // returning division styles in their initial form
+      // images division
+      // updating images divisions width from here
+      var images_div = document.getElementById("images-div");
+      var images = document.getElementsByClassName('res-image');
+      images_div.style.display = "none";
+      for (var i = 0; i < images.length; i++) {
+        images[i].width = 800;
+      }
+      document.getElementById('you-image-user1').src = "";
+      document.getElementById('you-image-user2').src = "";
+      document.getElementById('other-image-user1').src = "";
+      document.getElementById('other-image-user2').src = "";
 
-}
+      document.getElementById('images-user1').style.display = "none";
+      document.getElementById('images-user2').style.display = "none";
 
-function posterior_phase()
-{
-  document.getElementById('game').style.display = "block";
-  document.getElementById('game_frame').src = document.getElementById('game_frame').src;
+      document.getElementById("user1-other-name").innerHTML = ""; // this is the name of the user2
+      document.getElementById("user2-other-name").innerHTML = ""; // this is the name of the user1
+      // name of the user who finished 2nd
+      document.getElementById('user-finished2').innerHTML = "";
 
-  var iframe = document.getElementById("game_frame");
-  if (iframe) {
-      var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-      console.log('Starting iframe Posterior phase');
-    //iframeContent.Start_posterior();
-  }
+      // game division
+      var game_div = document.getElementById('game');
+      game_div.style.position = "static";
+      game_div.style.overflow = "auto";
 
+      // game frame
+      var iframe = document.getElementById("game_frame");
+      iframe.style.border = 'ridge';
+
+
+      //document.getElementById('waiting_area').style.display = "none";
+      if (iframe) {
+          var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+          iframeContent.location.reload(); // restarting iframe
+          // pausing to fully reload the iframe
+          setTimeout(function(){
+            iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
+          }, 1000);
+    } // closing of if statement
+
+
+    }
 }

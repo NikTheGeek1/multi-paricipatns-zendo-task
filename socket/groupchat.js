@@ -23,12 +23,15 @@ module.exports = function(io, Users){
 
 // receive dataURL for the screenshot on the server side and emit it privately
     socket.on('canvasData', (data)=>{
-
+          trial_num = data.trial_num;
           const sender = data.sender;
           const message = data.dataURL;
           const room = data.room;
           // adding who finished in the room
           who_finished[room].push(sender);
+          if (who_finished[room].length === 2){
+            who_finished[room] = [];
+          }
           var who_finished_inRoom = who_finished[room];
           socket.broadcast.to(room).emit('canvasDataBackToClient',{
                   // who finished
@@ -38,6 +41,7 @@ module.exports = function(io, Users){
                   //Message sent to receiver
                   message : message
               });
+
 
 
       });
@@ -60,6 +64,10 @@ module.exports = function(io, Users){
       // the callback reflects that function
     });
 
+    socket.on('storeData', data =>{
+      // store to mongoDB
+      console.log("Got the data");
+    });
   // creating a listenning event that every time a user disconnects, then the
   // function from the User class RemoveUser is going to be triggered and Remove user data
   socket.on('disconnect', () => {

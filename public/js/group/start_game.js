@@ -54,28 +54,41 @@ function StartIframe2()
             rule_names[rand_trial] + '</b> waves<br>' +
     '&#8226 You must select at least 1 and less than all 8.<b>';
 
+    prompt_phase4 = '<p id="prompt2"><b>Please describe in your own words what makes a scene emit radiation.<br></b></p>' +
+    	'&#8226 Try to make your description as <b>specific</b> as possible<br>' +
+    	'&#8226 Use <b>unambiguous</b> phrases like "There must be at least..." / "There are at most.." / "There is exactly one..."<br>' +
+    	'&#8226 <b>Remember:</b> the rule could be to do with any of the properties of the cones or their relationships, ' +
+    	'but has nothing to do with the name or what you did on previous tests<br>' +
+    	'&#8226 If you can think of more than one rule that could be true, please list them<br>' +
+    	'&#8226 If you cannot think of any rule that could be true, please say so<br>' +
+    	'&#8226 Type your answer (at least 15 characters) in the box below to continue<br>'
     //Prep data
     examples = zendo_cases[rand_trial].t.slice(0,1);
     test_cases = zendo_cases[rand_trial].t.slice(1).concat(zendo_cases[rand_trial].f.slice(1));
 
     // start iframe from here if this is not the first trial (if it's the first trial, iframe starts from groupchat)
     trial_num = (10 - trials_order.length);
-    if(trial_num > 1){ // if the first trials is finished
+    if(trial_num > 1 && trial_num < 10){ // if the first trials is finished
       console.log("Starting trial ", trial_num);
       var room = document.getElementById('groupName');
       // returning division styles in their initial form
       // images division
       // updating images divisions width from here
       var images_div = document.getElementById("images-div");
-      var images = document.getElementsByClassName('res-image');
       images_div.style.display = "none";
+
+      var images = [
+        document.getElementById('you-image-user1'),
+        document.getElementById('you-image-user2'),
+        document.getElementById('other-image-user1'),
+        document.getElementById('other-image-user2')
+      ]
       for (var i = 0; i < images.length; i++) {
         images[i].width = 800;
+        images[i].height = 500;
+        images[i].contentWindow.location.reload();
       }
-      document.getElementById('you-image-user1').src = "";
-      document.getElementById('you-image-user2').src = "";
-      document.getElementById('other-image-user1').src = "";
-      document.getElementById('other-image-user2').src = "";
+      //document.getElementById('you-image-user1').src = "";
 
       document.getElementById('images-user1').style.display = "none";
       document.getElementById('images-user2').style.display = "none";
@@ -103,8 +116,10 @@ function StartIframe2()
           setTimeout(function(){
             iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
           }, 1000);
-    } // closing of if statement
+    } else if (trial_num === 10) {// closing of if statement
+          // display debriefing
 
+    }
 
     }
 }

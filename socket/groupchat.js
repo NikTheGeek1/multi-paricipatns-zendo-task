@@ -1,4 +1,6 @@
 // SERVER SIDE
+const trialSchema = require('../models/trial'); // fetching the userSchema in the user model
+
 module.exports = function(io, Users){
   // bringing in the users class with all the methods to remove, add etc uers from the user list
   users = new Users(); // the new keyword creates a new constructor (instance in python lang?)
@@ -23,9 +25,11 @@ module.exports = function(io, Users){
 
 // receive dataURL for the screenshot on the server side and emit it privately
     socket.on('canvasData', (data)=>{
+          console.log("HERE");
+
           trial_num = data.trial_num;
           const sender = data.sender;
-          const message = data.dataURL;
+          const message = data.trialdata;
           const room = data.room;
           // adding who finished in the room
           who_finished[room].push(sender);
@@ -33,13 +37,18 @@ module.exports = function(io, Users){
             who_finished[room] = [];
           }
           var who_finished_inRoom = who_finished[room];
+
           socket.broadcast.to(room).emit('canvasDataBackToClient',{
                   // who finished
                   who_finished: who_finished_inRoom,
                   //The sender's username
                   sender : data.sender,
                   //Message sent to receiver
-                  message : message
+                  trialdata : message,
+                  //what the user selected
+                  selected : data.selected,
+                  // position of the generalisations
+                  posit_ix : data.posit_ix
               });
 
 
@@ -55,7 +64,9 @@ module.exports = function(io, Users){
       socket.join(params.room);// this method allows users to connect to a particular channel, takes argument room name
       users.AddUserData(socket.id, params.username, params.room);
       console.log('User '+params.username+' has joined room '+ params.room); // this will be displayed to the terminal
-      socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
+      setTimeout(function(){
+        socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
+      },500);
 
 
 
@@ -66,7 +77,20 @@ module.exports = function(io, Users){
 
     socket.on('storeData', data =>{
       // store to mongoDB
-      console.log("Got the data");
+      const new_trial = new trialSchema();
+      new_trial.username = data.sender;
+      new_trial.room = data.room;
+      new_trial.trial = trial_num;
+      new_trial.data = data.trialdata;
+      new_trial.prior = data.selected;
+      new_trial.posterior = data.selectedPost;
+      new_trial.disp_order = data.posit_ix;
+      new_trial.rule = data.rule_name;
+      new_trial.ph4_answer = data.ph4_answer;
+      new_trial.save(function(err) {
+        if (err)return handleError(err);
+      });
+      console.log("Got the data from user: ", data.sender, "and trial: ", trial_num);
     });
   // creating a listenning event that every time a user disconnects, then the
   // function from the User class RemoveUser is going to be triggered and Remove user data

@@ -184,8 +184,9 @@ function Start(fun, ss, tt, rn, counterbalance, posit_ix_, tr_count)
     btn.addEventListener(MouseEvent.MOUSE_OVER, onMOv);
     btn.addEventListener(MouseEvent.MOUSE_OUT , onMOu);
 
+
     ////////////////////
-    //Add a Continue button
+    //Add a Continue button (for sending the image to the neighbour)
     ////////////////////
     cbtn = new Sprite();
 
@@ -218,7 +219,6 @@ function Start(fun, ss, tt, rn, counterbalance, posit_ix_, tr_count)
     cbtn.addEventListener(MouseEvent.MOUSE_OVER, onMOv);
     cbtn.addEventListener(MouseEvent.MOUSE_OUT , onMOu);
     cbtn.visible = false;
-
 
     ////////////////////
     //Add a Continue button // for the posterior
@@ -1266,26 +1266,14 @@ function preparingForPosterior(){
     //trial_pics[i].removeChild(trial_pics[i]._children[numCh-1]);
     trial_pics[i].removeEventListener(MouseEvent.CLICK, SelectOption);
     trial_pics[i].addEventListener(MouseEvent.CLICK, SelectOptionPosterior);
-  }
+}
     // hide button
     cbtn.visible = false;
 }
 /////////////////////// H E L P E R S    F U N C T I O N S
 // COPY THESE TO NEW FILES
-function pasteScreenShot(dataURL) {
-  players_info = parent.players_info;
-  var room = parent.document.getElementById("groupName").value;// this will be the user who finished first
-  var user_finished = parent.document.getElementById("username").value;// this will be the user who finished first
-  var user = players_info[user_finished][0]; // that's the info on whether the user is user1 or user2
-  // now we'll take the name of the other user (not the one who finished now)
-  var idx_OTHERfinished = Math.abs(Object.keys(players_info).indexOf(user_finished) - 1); // this formula will always give us the other number from 0 and 1. e.g if it's 0, it'll give us 1 etc
-  var user_OTHERfinished = Object.keys(players_info)[idx_OTHERfinished];
-  // put image of what the player did to the YOU section of user x
-  var youImageUserX = parent.document.getElementById('you-image-'+user);
-  youImageUserX.src = dataURL;
-  parent.document.getElementById('images-'+user).style.display = "block";
-  parent.document.getElementById(user+"-other-name").innerHTML = user_OTHERfinished; // this is the name of the user2
-  console.log(parent.who_finished);
+function waitingAreaOrNo(user_OTHERfinished) {
+  // display or not the waiting area
   if((typeof(parent.who_finished ) === "undefined") || parent.who_finished.length % 2 === 0 ){ // if this is the first to finish the trial
 
     // Add the waiting area here
@@ -1294,13 +1282,67 @@ function pasteScreenShot(dataURL) {
 
   }else{ // this is the second to finish the game
     //  displayes the image block only for themselves
-    parent.document.getElementById('images-div').style.display = "block";
+    //parent.document.getElementById('images-div').style.display = "block";
+    parent.document.getElementById('button-to-posterior-div').style.display = "block";
     parent.who_finished = [];
   }
+}
+function getUserDetails(){
+  players_info = parent.players_info;
+  var room = parent.document.getElementById("groupName").value;// this will be the user who finished first
+  var user_finished = parent.document.getElementById("username").value;// this will be the user who finished first
+  var user = players_info[user_finished][0]; // that's the info on whether the user is user1 or user2
+  // now we'll take the name of the other user (not the one who finished now)
+  var idx_OTHERfinished = Math.abs(Object.keys(players_info).indexOf(user_finished) - 1); // this formula will always give us the other number from 0 and 1. e.g if it's 0, it'll give us 1 etc
+  var user_OTHERfinished = Object.keys(players_info)[idx_OTHERfinished];
+  return {user, user_OTHERfinished}
+}
+function pasteScreenShot(trialdata) {
+  var userD = getUserDetails();
+  var user = userD.user;
+  var user_OTHERfinished = userD.user_OTHERfinished;
 
+
+  // put image of what the player did to the YOU section of user x
+  var youIframe = parent.document.getElementById('you-image-'+user);
+  var youIframeContent = (youIframe.contentWindow || youIframe.contentDocument);
+  parent.document.getElementById('images-'+user).style.display = "block";
+  parent.document.getElementById('images-div').style.display = "block"; // we need to momentarily display it before drawing into it because it doesn't work if it is hidden
+  youIframeContent.draw_generalisations(trialdata, selected, posit_ix, 'you-image-'+user);
+  parent.document.getElementById('images-div').style.display = "none";
+  parent.document.getElementById(user+"-other-name").innerHTML = user_OTHERfinished; // this is the name of the user2
+
+
+}// END OF PASTE SCREENSHOT
+
+function draw_ticks_posterior() {
+  // adding ticks on the posterior where appropriate
+  objects = [];
+  for (var t = 8; t < trial_pics.length; t++) {
+
+    if(selected[t-8] === true){
+      var bd  = new BitmapData('/images/tick.png');//tick.png');
+      objects.push(new Bitmap(bd));
+      trial_pics[t].addChild(objects[objects.length-1]);
+      objects[objects.length-1].x=stage.stageWidth*(8/10);
+      objects[objects.length-1].y=stage.stageHeight*(1/10);
+      objects[objects.length-1].scaleX=objects[objects.length-1].scaleY=0.5 * window.devicePixelRatio;
+
+    }
+     if(parent.other_selected[t-8] === true){
+      var bd  = new BitmapData('/images/tick_post.png');//tick.png');
+      objects.push(new Bitmap(bd));
+      trial_pics[t].addChild(objects[objects.length-1]);
+      objects[objects.length-1].x=stage.stageWidth*(2/10);
+      objects[objects.length-1].y=stage.stageHeight*(1/10);
+      objects[objects.length-1].scaleX=objects[objects.length-1].scaleY=0.5 * window.devicePixelRatio;
+    }
+  }
 }
 
 
+
+////////////////////////////////// E N D  O F  H E L P E R S //////////////////////////////
 function AddMessage(pointer)
 {
     stage.addChild(pointer);
@@ -1313,38 +1355,38 @@ function RemoveMessage(pointer)
 
 function Continue(e)
 {
-  
-  // getting screenshot of the canva
-  var height = Math.round(stage.stageHeight); // dimensions of the iframe
-  var width = Math.round(stage.stageWidth);
-  var dataURL = screenShot(width, height)
-  // paste screenshot to the YOU side of the user
-  pasteScreenShot(dataURL);
 
-  // sending data to client
-  var sender = parent.document.getElementById("username").value;
-  var room = parent.document.getElementById("groupName").value;
-  parent.socket.emit('canvasData', {sender, room, dataURL, trial_num});
+  // getting screenshot of the canva
+  //var height = Math.round(stage.stageHeight); // dimensions of the iframe
+  //var width = Math.round(stage.stageWidth);
+  //var dataURL = ""; //screenShot(width, height);
+  // paste screenshot to the YOU side of the user
+  pasteScreenShot(trialdata);
+
 
   // destroy  the upper pics and removing the old overlay and create a new one
-  preparingForPosterior();
+  //preparingForPosterior();
 
-  // hidding task
-  parent.document.getElementById("game").style.display = "none";
+  // hidding only the iframe (leave inside query2)
+  parent.document.getElementById("game_frame").style.height = "191px";
+  // display textarea (button included)
+  parent.document.getElementById('phase4-div').style.display = "block";
+  parent.d3.select("#query2").html(parent.prompt_phase4);
 
   // updating images divisions width from here
-  var images = parent.document.getElementsByClassName('res-image');
-  for (var i = 0; i < images.length; i++) {
-    images[i].width = 400;
-  }
+  //var images = parent.document.getElementsByClassName('res-image');
+  //for (var i = 0; i < images.length; i++) {
+  //  images[i].width = 400;
+  //}
 
 }
 
 
-function ContinuePosterior(e){ // reference from the button continue to posterior
-// saving the data
-// sending it to the server
 
+function ContinuePosterior(e){ // reference from the button continue to posterior
+
+// drawing the posterior ticks
+iframeContent.draw_ticks_posterior();
 
 var sender = parent.document.getElementById("username").value;
 var room = parent.document.getElementById("groupName").value;
@@ -1352,7 +1394,8 @@ var room = parent.document.getElementById("groupName").value;
 // for some fucking weird reason trial_num is not defined in the scope of this function
 // but it is defined in the Continue function above. for that reason, i am sending the
 // trial_num variable to the SERVER from the Continue function
-parent.socket.emit('storeData', {trialdata, sender, room});
+var ph4_answer = parent.ph4_answer;
+parent.socket.emit('storeData', {ph4_answer, trialdata, sender, room, selected, selectedPost, posit_ix, rule_name});
 
 
 

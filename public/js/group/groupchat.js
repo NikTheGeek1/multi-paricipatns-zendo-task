@@ -132,12 +132,9 @@ $(document).ready(function(){
     if (users.length === 1){
 
       // THIS WILL EVALUATE TO TRUE ONLY WHEN SOMEBODY LEAVES DURING THE GAME
-      document.getElementById('game').style.visibility = "hidden";
-      document.getElementById('waiting_area').style.display = "block";
-      // refreshing iframe too so we will start from the beginning
-      var iframe = document.getElementById("game_frame");
-      var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-      //iframeContent.location.reload();
+      //document.getElementById('game').style.visibility = "hidden";
+      //document.getElementById('waiting_area').style.display = "block";
+
     } else if (users.length === 2){
       // only player 1 will ever reach that point
       // if there are two users, get the data game for the trial

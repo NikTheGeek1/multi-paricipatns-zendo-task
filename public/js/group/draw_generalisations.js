@@ -21,7 +21,8 @@ function draw_generalisations(data, choices, posit_ix, div_id) {
   }else{
     tick_color = 'red';
   }
-  ratio = 100 * 1; //1 meter == 100 pixels (worry about pixel_ratio later!)
+  var pixel_ratio =  window.devicePixelRatio;
+  ratio = 100 * pixel_ratio; //1 meter == 100 pixels (worry about pixel_ratio later!)
   choices = choices;
   posit_ix = posit_ix;
 

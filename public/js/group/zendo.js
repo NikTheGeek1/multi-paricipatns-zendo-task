@@ -1385,8 +1385,6 @@ function Continue(e)
 
 function ContinuePosterior(e){ // reference from the button continue to posterior
 
-// drawing the posterior ticks
-iframeContent.draw_ticks_posterior();
 
 var sender = parent.document.getElementById("username").value;
 var room = parent.document.getElementById("groupName").value;

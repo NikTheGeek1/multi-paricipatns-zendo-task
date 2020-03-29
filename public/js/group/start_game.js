@@ -115,7 +115,7 @@ function StartIframe2()
           // pausing to fully reload the iframe
           setTimeout(function(){
             iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
-          }, 1000);
+          }, 3000);
     } else if (trial_num === 10) {// closing of if statement
           // display debriefing
 

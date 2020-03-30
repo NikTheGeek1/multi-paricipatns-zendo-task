@@ -131,5 +131,4 @@ function StartIframe2()
           document.getElementById('images-div').style.display = "none";
     }
 
-    }
-}
+  }

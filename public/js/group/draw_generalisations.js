@@ -161,7 +161,7 @@ function draw_generalisations(data, choices, posit_ix, div_id) {
           stage.addChild(trial_pics[t]);
 
           trial_pics[t].width = trial_pics[t].width/8;//stage.stageWidth/4;
-          trial_pics[t].height = trial_pics[t].height/4;//(stage.stageHeight*frame_height)/4;
+          trial_pics[t].height = trial_pics[t].height/4*.8;//(stage.stageHeight*frame_height)/4;
 
           trial_pics[t].x=(posit_ix[t-8]%4)*(stage.stageWidth/8);
 

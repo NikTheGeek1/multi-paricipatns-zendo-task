@@ -72,8 +72,8 @@ function draw_generalisations(data, choices, posit_ix, div_id) {
       //Frame
       trial_pics[t].graphics.lineStyle(5, 0x777777);
       trial_pics[t].graphics.moveTo(0, 0);
-      trial_pics[t].graphics.lineTo(stage.stageWidth, 0);
-      trial_pics[t].graphics.lineTo(stage.stageWidth, stage.stageHeight*frame_height);
+      trial_pics[t].graphics.lineTo(stage.stageWidth-2, 0);
+      trial_pics[t].graphics.lineTo(stage.stageWidth-2, stage.stageHeight*frame_height);
       trial_pics[t].graphics.lineTo(0, stage.stageHeight*frame_height);
       trial_pics[t].graphics.endFill();
 

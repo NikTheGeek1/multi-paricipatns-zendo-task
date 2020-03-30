@@ -38,6 +38,13 @@ function StartIframe2()
     rand_trial = trials_order.pop();
     rand_counter = rand_counter_order.pop();
 
+    if (typeof(rand_trial) === 'undefined') {
+      // just so the following code doesn't break...
+      trials_order.length = 10; // we define the length so the following if statement will not break and go to debrief
+      rand_trial = 4;
+      rand_counter = 4;
+
+    }
     prompt_phase1 = '<p id="prompt2" align="left">&#8226 Here are some objects.<br>' +
                 '&#8226 Click "<b>Test</b>" to see if they emit <b>'  +
                     rule_names[rand_trial] + '</b> waves.</p>';
@@ -68,7 +75,7 @@ function StartIframe2()
 
     // start iframe from here if this is not the first trial (if it's the first trial, iframe starts from groupchat)
     trial_num = (10 - trials_order.length);
-    if(trial_num > 1 && trial_num < 10){ // if the first trials is finished
+    if(trial_num > 1 && trial_num < 11){ // if the first trials is finished
       console.log("Starting trial ", trial_num);
       var room = document.getElementById('groupName');
       // returning division styles in their initial form
@@ -116,9 +123,12 @@ function StartIframe2()
           setTimeout(function(){
             iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
           }, 3000);
-    } else if (trial_num === 10) {// closing of if statement
+    }
+  }else if (trial_num === 0) {// closing of if statement
           // display debriefing
-
+          document.getElementById('debrief').style.display = "block";
+          document.getElementById('game').style.display = "none";
+          document.getElementById('images-div').style.display = "none";
     }
 
     }

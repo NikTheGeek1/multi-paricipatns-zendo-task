@@ -329,10 +329,114 @@
 
 
 
+
+
+  <!-- Debriefing -->
+  <div id="debrief" class="frame" style="display:none;">
+  	<h1>Demographics and Debrief</h1>
+  	<p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
+  	<p> <span style="font-weight:bold">Note</span>:  To continue, please answer <span style="color:red">all questions</span>.</p>
+  	<div class="instructions well">
+  	    <form id="postquiz" action="debrief" method="post">
+  			<p>Do you have any comments regarding the experiment?</p>
+  		    <textarea name="feedback" id="feedback" class="posttestQ" style="width:760px; height:100px;"  ></textarea>
+  			<br>
+  			<p>How did you decide between candidates when providing your <b>initial recommendation</b>? Did you have a specific strategy?</p>
+  		    <textarea name="init_strat" id="init_strat" class="posttestQ" style="width:760px; height:100px;"  ></textarea>
+  			<br>
+  			<p>How did you decide between candidates when providing your <b>final recommendation</b>? Did you have a specific strategy?</p>
+  		    <textarea name="final_strat" id="final_strat" class="posttestQ" style="width:760px; height:100px;"  ></textarea>
+  			<br>
+  	        <p><b>1.</b> How old are you?:
+  	          <input id="ageinput" class="posttestQ" type="number" maxlength = "3" name="age" id="age" min="18" max="100" step = "1"> years
+  	        </p>
+  	        <p><b>2.</b> What is your gender?
+  	        <select id="sex" name="sex" class="posttestQ">
+  	           <option value="noresp" SELECTED></option>
+  	           <option value="female">Female</option>
+  	           <option value="male">Male</option>
+  	           <option value="other">Other</option>
+  	           <option value="noresponse">I’d prefer not to respond</option>
+  	         </select>
+  	        </p>
+  	        <br/>
+  	        <!-- beginning of a question -->
+  	        <div class="row question">
+  	            <div class="col-md-8">
+  	                <b>3.</b>On a scale of 1-10 (where 10 is the most engaged), please rate how <b>ENGAGING</b> you found the learning task:
+  	            </div>
+  	            <div class="col-md-4">
+  	                <select id="engagement" name="engagement" class="posttestQ">
+  	                    <option value="--" SELECTED>
+  	                    <option value="10">10 - Very engaging</option>
+  	                    <option value="9">9</option>
+  	                    <option value="8">8</option>
+  	                    <option value="7">7</option>
+  	                    <option value="6">6</option>
+  	                    <option value="5">5 - Moderately</option>
+  	                    <option value="4">4</option>
+  	                    <option value="3">3</option>
+  	                    <option value="2">2</option>
+  	                    <option value="1">1</option>
+  	                    <option value="0">0 - Not engaged</option>
+  	                </select>
+  	            </div>
+  	        </div>
+  	        <!-- end of a question -->
+  	        <!-- beginning of a question -->
+  	        <div class="row question">
+  	            <div class="col-md-8">
+  	                <b>4.</b>On a scale of 1-10 (where 10 is the most difficult), please rate how <b>DIFFICULT</b> you found the learning task:
+  	            </div>
+  	            <div class="col-md-4">
+  	                <select id="difficulty" name="difficulty" class="posttestQ">
+  	                    <option value="--" SELECTED>
+  	                    <option value="10">10 - Very difficult</option>
+  	                    <option value="9">9</option>
+  	                    <option value="8">8</option>
+  	                    <option value="7">7</option>
+  	                    <option value="6">6</option>
+  	                    <option value="5">5 - Moderately difficult</option>
+  	                    <option value="4">4</option>
+  	                    <option value="3">3</option>
+  	                    <option value="2">2</option>
+  	                    <option value="1">1</option>
+  	                    <option value="0">0 - Not difficult at all</option>
+  	                </select>
+  	            </div>
+  	        </div>
+  	        <!-- end of a question -->
+  	        <!-- beginning of a question -->
+  	        <div class="row question">
+  	            <div class="col-md-8">
+  	                <b>4.</b>On a scale of 1-7 (where 1 is very liberal and 7 is very conservative), please rate your <b>POLITICAL ORIENTATION</b>:
+  	            </div>
+  	            <div class="col-md-4">
+  	                <select id="pol_orientation" name="pol_orientation" class="posttestQ">
+  	                    <option value="--" SELECTED>
+  	                    <option value="7">7 - Very conservative</option>
+  	                    <option value="6">6 - Conservative</option>
+  	                    <option value="5">5 - Moderately conservative</option>
+  	                    <option value="4">4 - Neutral</option>
+  	                    <option value="3">3 - Moderately liberal</option>
+  	                    <option value="2">2 - Liberal</option>
+  	                    <option value="1">1 - Very liberal</option>
+  	                </select>
+  	            </div>
+  	        </div>
+  	        <!-- end of a question -->
+  	    </form>
+  	    <br>
+  	    <button class="button" id="done_debrief" disabled>Done</button>
+  	</div>
+  </div>
+
+
+
 <!-- Scripts -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/group/groupchat.js"></script>
-<script src="/js/group/task.js"></script>
+<!-- <script src="/js/group/task.js"></script> -->
 
 <script type="text/javascript" src="/js/group/start_game.js"></script>
 

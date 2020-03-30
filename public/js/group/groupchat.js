@@ -120,6 +120,8 @@ $(document).ready(function(){
     }
 
   socket.emit('join', params, function(){
+    start_task_time = new Date();
+    token_id = socket.id;
       console.log('User '+params.username+' has joined room '+ params.room)
     });
 
@@ -240,7 +242,7 @@ $(document).ready(function(){
       var selected = iframeC.selected;
       var posit_ix = iframeC.posit_ix;
       iframeC.preparingForPosterior();
-
+      document.getElementById('phase4-text').value = "";
       socket.emit('canvasData', {sender, room, trialdata, trial_num, selected, posit_ix});
     }
 
@@ -356,6 +358,86 @@ $(document).ready(function(){
     $('#game').show();
     document.getElementById("game").style.visibility = "visible";
   });
+
+  //////////////////////// debrief  ////////////////////////////////////
+  var error_message = "<h1>Oops!</h1><p>Something went wrong submitting your HIT. " +
+  "This might happen if you lose your internet connection. Press the button to resubmit.</p><button id='resubmit'>Resubmit</button>";
+
+//Listen for all fields being complete
+posttest_button_disabler = function () {
+	if($("#feedback").val() === '' || $("#age").val() === '' || $("#sex").val() === 'noresp' || $("#engagement").val() === '--' || $("#difficulty").val() === '--' || $("#pol_orientation").val() === '--' || $("#init_strat").val() === '' || $("#final_strat").val() === '') {
+		$('#done_debrief').prop('disabled',true);
+	} else{
+		$('#done_debrief').prop('disabled',false);
+	}
+}
+
+prompt_resubmit = function() {
+	document.body.innerHTML = error_message;
+	$("#resubmit").click(resubmit);
+};
+//Assign the (dis)abler function to all posttestQ class objects
+$(".posttestQ").change(function () {
+	posttest_button_disabler();
+})
+
+
+// Block enter in age field
+$("#ageinput").keydown(function(event){
+	if(event.keyCode == 13) {
+		event.preventDefault();
+		console.log('blocked enter in age field');
+		return false;
+	}
+});
+
+$("#done_debrief").click(function(){
+
+
+	console.log('FINISHED TASK');
+
+	var end_time = new Date();
+  var username = document.getElementById("username").value;
+  var room = document.getElementById("groupName").value;
+
+	var data = {
+			date:String(end_time.getFullYear()) + '_' +
+				String(end_time.getMonth() + 1).padStart(2, '0') + '_' +
+				String(end_time.getDate() + 1).padStart(2, '0'),
+			time:String(end_time.getHours()+ 1).padStart(2, '0') + '_' +
+				String(end_time.getMinutes() + 1).padStart(2, '0')+ '_' +
+				String(end_time.getSeconds() + 1).padStart(2, '0'),
+			age:$("#ageinput").val(),
+			gender:$("#sex").val(),
+			feedback:$('#feedback').val(),
+			initial_strategy: $('#init_strat').val(),
+			final_strategy: $('#final_strat').val(),
+			//instructions_duration:start_task_time - start_time,
+			task_duration:end_time - start_task_time,
+			engaging:$("#engagement").val(),
+			difficult:$("#difficulty").val(),
+			pol_orient:$("#pol_orientation").val(),
+			token: token_id,
+      username: username,
+      room: room};
+
+    // send to server
+    socket.emit('debriefData', data);
+
+		//goto_complete(token_id);
+	});
+
+goto_debrief = function () {
+  $("#ins_1").hide();
+  $("#game").hide();
+  $("#debrief").show();
+};
+
+goto_task = function () {
+  $("#ins_1").hide();
+  $("#game").show();
+};
+
 }); // closing of function ready
 
 //////////////////////////////////////////////

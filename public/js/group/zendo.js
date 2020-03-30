@@ -1393,7 +1393,9 @@ var room = parent.document.getElementById("groupName").value;
 // but it is defined in the Continue function above. for that reason, i am sending the
 // trial_num variable to the SERVER from the Continue function
 var ph4_answer = parent.ph4_answer;
-parent.socket.emit('storeData', {ph4_answer, trialdata, sender, room, selected, selectedPost, posit_ix, rule_name});
+var token_id = parent.token_id;
+parent.socket.emit('storeData', {ph4_answer, trialdata, sender, room, selected,
+   selectedPost, posit_ix, rule_name, token_id});
 
 
 

@@ -1,5 +1,6 @@
 // SERVER SIDE
 const trialSchema = require('../models/trial'); // fetching the userSchema in the user model
+const debriefSchema = require('../models/debrief'); // fetching the userSchema in the user model
 
 module.exports = function(io, Users){
   // bringing in the users class with all the methods to remove, add etc uers from the user list
@@ -22,6 +23,8 @@ module.exports = function(io, Users){
       io.to(room).emit('trialDataBackToClient', data);
     });
     /////////////////////////////////////////
+
+
 
 // receive dataURL for the screenshot on the server side and emit it privately
     socket.on('canvasData', (data)=>{
@@ -75,6 +78,28 @@ module.exports = function(io, Users){
       // the callback reflects that function
     });
 
+    // store data from debrief
+    socket.on('debriefData', data => {
+      const new_debrief = new debriefSchema();
+      new_debrief.date = data.date;
+      new_debrief.time = data.time;
+      new_debrief.age = data.age;
+      new_debrief.gender = data.gender;
+      new_debrief.initial_strategy = data.initial_strategy;
+      new_debrief.final_strategy = data.final_strategy;
+      new_debrief.task_duration = data.task_duration;
+      new_debrief.engaging = data.engaging;
+      new_debrief.difficult = data.difficult;
+      new_debrief.pol_orient = data.pol_orient;
+      new_debrief.token_id = data.token_id;
+      new_debrief.username = data.username;
+      new_debrief.room = data.room;
+
+      new_debrief.save(function(err) {
+        if (err)return handleError(err);
+      });
+    });
+
     socket.on('storeData', data =>{
       // store to mongoDB
       const new_trial = new trialSchema();
@@ -87,6 +112,7 @@ module.exports = function(io, Users){
       new_trial.disp_order = data.posit_ix;
       new_trial.rule = data.rule_name;
       new_trial.ph4_answer = data.ph4_answer;
+      new_trial.token_id = data.token_id;
       new_trial.save(function(err) {
         if (err)return handleError(err);
       });

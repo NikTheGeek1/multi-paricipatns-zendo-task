@@ -417,15 +417,24 @@ $("#done_debrief").click(function(){
 			engaging:$("#engagement").val(),
 			difficult:$("#difficulty").val(),
 			pol_orient:$("#pol_orientation").val(),
-			token: token_id,
+			token_id: token_id,
       username: username,
       room: room};
 
     // send to server
     socket.emit('debriefData', data);
 
+    $('#debrief').hide();
+    $('#thank-you').show();
+    $('#compl_code').text(token_id);
+
 		//goto_complete(token_id);
 	});
+
+  // thank you button
+  $("#btn-thank-you").click(function(){
+    // here add the code to kick them out if the plan a doesn't work, else delete
+  });
 
 goto_debrief = function () {
   $("#ins_1").hide();

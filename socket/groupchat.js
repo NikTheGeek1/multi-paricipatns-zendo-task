@@ -98,6 +98,8 @@ module.exports = function(io, Users){
       new_debrief.save(function(err) {
         if (err)return handleError(err);
       });
+
+      socket.disconnect();
     });
 
     socket.on('storeData', data =>{

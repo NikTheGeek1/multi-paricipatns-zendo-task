@@ -268,86 +268,81 @@ $(document).ready(function(){
   });
 
   //////////////////////////////////////////////
-  // MAIN STEPS INVOLVED IN THE TASK
-  //////////////////////////////////////////////
+    // MAIN STEPS INVOLVED IN THE TASK
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    // 1 STEPPING THROUGH INSTRUCTIONS
+    //////////////////////////////////////////////
+    $('#ins_1_btn').click(function () {
+      $('#ins_1').hide();
+      $('#ins_2').show();
+    });
+    $('#ins_2_btn').click(function () {
+      $('#ins_2').hide();
+      $('#ins_3').show();
+    });
+    $('#ins_3_btn').click(function () {
+      $('#ins_3').hide();
+      $('#ins_4').show();
+    });
+    $('#ins_4_btn').click(function () {
+      $('#ins_4').hide();
+      $('#ins_5').show();
+    });
+    $('#ins_5_btn').click(function () {
+      $('#ins_5').hide();
+      $('#ins_6').show();
+    });
+    $('#ins_6_btn').click(function () {
+      $('#ins_6').hide();
+      $('#ins_7').show();
+    });
+    $('#ins_7_btn').click(function () {
+      $('#ins_7').hide();
+      $('#ins_8').show();
+    });
+    $('#ins_8_btn').click(function () {
+      $('#ins_8').hide();
+      $('#comprehension_quiz').show();
+    });
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    //////////////////////////////////////////////
+    // 2 COMPREHENSION QUIZ
+    //////////////////////////////////////////////
+    var comp_checker = function() {
+      $('#done_comp').show();
+      //Pull the selected values
+      var q1 = $('#comprehension_q1').val();
+      var q2 = $('#comprehension_q2').val();
+      var q3 = $('#comprehension_q3').val();
+      var q4 = $('#comprehension_q4').val();
+      var q5 = $('#comprehension_q5').val();
+      var q6 = $('#comprehension_q6').val();
+       // correct answers
+       answers = ["true", "false", "true", "false", "false", "true"];
+       if(q1 == answers[0] && q2 == answers[1] && q3 == answers[2] && q4 == answers[3] && q5 == answers[4] && q6 == answers[5]){
+              // enable subject to start experiment
+          $('#comprehension_btn').hide();
+          $('#start_btn').show();
+          alert('You got everything correct! Press "Start" to begin the experiment.');
+        } else {
+          // Throw them back to the start of the instructions
+          // Remove their answers and have them go through again
+          alert('You answered at least one question incorrectly! Please try again.');
+          $('#comprehension_q1').prop('selectedIndex', 0);
+          $('#comprehension_q2').prop('selectedIndex', 0);
+          $('#comprehension_q3').prop('selectedIndex', 0);
+          $('#comprehension_q4').prop('selectedIndex', 0);
+          $('#comprehension_q5').prop('selectedIndex', 0);
+          $('#comprehension_q6').prop('selectedIndex', 0);
+          $('#start_btn').hide();
+          $('#comprehension_btn').show();
+          $('#ins_1').show();
+            $('#comprehension_quiz').hide();
+        };
+    };
 
-  //////////////////////////////////////////////
-  // 1 STEPPING THROUGH INSTRUCTIONS
-  //////////////////////////////////////////////
-  $('#ins_1_btn').click(function () {
-    $('#ins_1').hide();
-    $('#ins_2').show();
-  });
-
-  $('#ins_2_btn').click(function () {
-    $('#ins_2').hide();
-    $('#ins_3').show();
-  });
-
-  $('#ins_3_btn').click(function () {
-    $('#ins_3').hide();
-    $('#ins_4').show();
-  });
-
-  $('#ins_4_btn').click(function () {
-    $('#ins_4').hide();
-    $('#ins_5').show();
-  });
-
-  $('#ins_5_btn').click(function () {
-    $('#ins_5').hide();
-    $('#ins_6').show();
-  });
-
-  $('#ins_6_btn').click(function () {
-    $('#ins_6').hide();
-    $('#ins_7').show();
-  });
-
-  $('#ins_7_btn').click(function () {
-    $('#ins_7').hide();
-    $('#comprehension_quiz').show();
-  });
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-
-
-  //////////////////////////////////////////////
-  // 2 COMPREHENSION QUIZ
-  //////////////////////////////////////////////
-  var comp_checker = function() {
-  	$('#done_comp').show();
-  	//Pull the selected values
-  	var q1 = $('#comprehension_q1').val();
-  	var q2 = $('#comprehension_q2').val();
-  	var q3 = $('#comprehension_q3').val();
-  	var q4 = $('#comprehension_q4').val();
-  	var q5 = $('#comprehension_q5').val();
-
-     // correct answers
-     answers = ["true", "false", "true", "false", "false"];
-
-     if(q1 == answers[0] && q2 == answers[1] && q3 == answers[2] && q4 == answers[3] && q5 == answers[4]){
-     		// enable subject to start experiment
-        $('#comprehension_btn').hide();
-        $('#start_btn').show();
-        alert('You got everything correct! Press "Start" to begin the experiment.');
-      } else {
-      	// Throw them back to the start of the instructions
-      	// Remove their answers and have them go through again
-  		alert('You answered at least one question incorrectly! Please try again.');
-
-      	$('#comprehension_q1').prop('selectedIndex', 0);
-      	$('#comprehension_q2').prop('selectedIndex', 0);
-      	$('#comprehension_q3').prop('selectedIndex', 0);
-      	$('#comprehension_q4').prop('selectedIndex', 0);
-      	$('#comprehension_q5').prop('selectedIndex', 0);
-      	$('#start_btn').hide();
-      	$('#comprehension_btn').show();
-      	$('#ins_1').show();
-  		  $('#comprehension_quiz').hide();
-      };
-  };
 
   $('#comprehension_btn').click(function () {
     comp_checker();

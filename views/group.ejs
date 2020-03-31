@@ -33,7 +33,7 @@
     <script src="/js/group/rules.js"></script>
 </head>
 <!-- onload="document.getElementById('game_frame').contentWindow.startIframeORgetIframe();" -->
-<body>
+<body style="background:lavenderblush">
 
 <!-- GROUP NAME -->
 <input type="hidden" name="" id="groupName" value="<%= groupName %>">
@@ -112,9 +112,11 @@
 
 
 <!-- Waiting for particiant division -->
-<div id="waiting_area">
-  Hey <%= username %>, thank you for joining our experiment! Please enjoy this
-  cutie while waiting for another participant to join :) <br><br>
+<div id="waiting_area" style="background:lavenderblush">
+  <div style = "text-align:center; font-size:20px;">
+    Hey <%= username %>, thank you for joining our experiment! <br> Please enjoy this
+    cutie while waiting for another participant to join :) <br><br>
+  </div>
   <div align=center>
       <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
           <source src = "/movies/cat_vid.mp4" type="video/mp4">

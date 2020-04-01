@@ -137,7 +137,7 @@ $(document).ready(function(){
 
       goto_debrief();
       document.getElementById('user-left').style.display = "block";
-      $.notify("Unfortunately, user: " +data.params.username+ " just left the game");
+      $.notify("Unfortunately, user: " +users[0]+ " just left the game");
 
     } else if (users.length === 2){
       // only player 1 will ever reach that point

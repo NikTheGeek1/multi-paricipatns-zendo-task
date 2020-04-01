@@ -134,8 +134,10 @@ $(document).ready(function(){
     if (users.length === 1){
 
       // THIS WILL EVALUATE TO TRUE ONLY WHEN SOMEBODY LEAVES DURING THE GAME
-      //document.getElementById('game').style.visibility = "hidden";
-      //document.getElementById('waiting_area').style.display = "block";
+
+      goto_debrief();
+      document.getElementById('user-left').style.display = "block";
+      $.notify("Unfortunately, user: " +data.params.username+ " just left the game");
 
     } else if (users.length === 2){
       // only player 1 will ever reach that point
@@ -263,7 +265,41 @@ $(document).ready(function(){
     var iframeC = (iframe.contentWindow || iframe.contentDocument);
     iframeC.draw_ticks_posterior();
 
+  });
 
+  $('#phase5btn').click(function(){
+    ph5_answer = document.getElementById('phase5-text').value;
+    document.getElementById('phase5-div').style.display = "none";
+
+    // displaying iframe (but hide iframe division)
+    document.getElementById('game').style.display = "none";
+
+    var iframe = document.getElementById('game_frame');
+    var iframeC = (iframe.contentWindow || iframe.contentDocument);
+
+    var sender = document.getElementById("username").value;
+    var room = document.getElementById("groupName").value;
+    var trialdata = iframeC.trialdata;
+    var selected = iframeC.selected;
+    var posit_ix = iframeC.posit_ix;
+    var selectedPost = iframeC.selectedPost;
+    var rule_name = iframeC.rule_name;
+
+    document.getElementById('phase5-text').value = "";
+    socket.emit('storeData', {
+      ph4_answer,
+      ph5_answer,
+      sender,
+      room,
+      trialdata,
+      selected,
+      posit_ix,
+      selectedPost,
+      rule_name,
+      token_id,
+    });
+
+    StartIframe2();
 
   });
 

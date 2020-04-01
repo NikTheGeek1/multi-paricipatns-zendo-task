@@ -114,6 +114,7 @@ module.exports = function(io, Users){
       new_trial.disp_order = data.posit_ix;
       new_trial.rule = data.rule_name;
       new_trial.ph4_answer = data.ph4_answer;
+      new_trial.ph5_answer = data.ph5_answer;
       new_trial.token_id = data.token_id;
       new_trial.save(function(err) {
         if (err)return handleError(err);

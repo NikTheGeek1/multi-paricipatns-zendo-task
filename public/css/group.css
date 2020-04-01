@@ -48,16 +48,16 @@ h3 {
   width: 900px;
 }
 #other-imagesDivisions-2 {
-  border:5px solid red;
+  border:5px solid grey;
 }
 #you-imagesDivisions-2 {
-  border:5px solid green
+  border:5px solid black
 }
 #other-imagesDivisions-1 {
-  border:5px solid red;
+  border:5px solid grey;
 }
 #you-imagesDivisions-1 {
-  border:5px solid green
+  border:5px solid black
 }
 .navbar-default .navbar-brand {
     color: #fff;

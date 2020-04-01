@@ -109,6 +109,7 @@ function StartIframe2()
       var game_div = document.getElementById('game');
       game_div.style.position = "static";
       game_div.style.overflow = "auto";
+      game_div.style.display = "block";
 
       // game frame
       var iframe = document.getElementById("game_frame");
@@ -124,7 +125,7 @@ function StartIframe2()
             iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
           }, 3000);
     }
-  }else if (trial_num === 0) {// closing of if statement
+  }else if (trial_num === 6) {// closing of if statement
           // display debriefing
           document.getElementById('debrief').style.display = "block";
           document.getElementById('game').style.display = "none";

@@ -101,15 +101,13 @@
           </div>
       </div>
 
+    </div>
+  <!-- Continue to Posterior div -->
+    <div id="button-to-posterior-div">
+      <p>Press continue to revise your initial choices</p>
+      <button id = "button-to-posterior" type="button" name="continue" ><span>Continue</span></button>
+    </div>
   </div>
-  <!--  Continue to Posterior div  -->
-  <div id="button-to-posterior-div">
-    <p>Press continue to continue</p>
-    <button id = "button-to-posterior" type="button" name="continue" ><span>Continue</span></button>
-  </div>
-
-</div>
-
 
 <!-- Waiting for particiant division -->
 <div id="waiting_area" style="background:lavenderblush">
@@ -129,7 +127,7 @@
 <div class="instructions well" id="ins_1" style="display:none;">
     <p>Thank you for agreeing to participate!</p>
     <p>In this task you will be using your scientific investigation skills.</p>
-    <p>You and your collaborator have arrived on a bizarre alien planet where the only objects you can see are colored cones clumped into small groups in an otherwise empty landscape (Figure 1).</p>
+    <p>You and the other player have arrived on a bizarre alien planet where the only objects you can see are colored cones clumped into small groups in an otherwise empty landscape (Figure 1).</p>
     <div align=center>
        <img src="/images/instructions/ins1_1.png" alt="ex1" style="width:600px;">
        <figcaption>Figure 1 - Bizarre alien planet.</figcaption>
@@ -148,7 +146,7 @@
 
 <div class="instructions well" id="ins_2" style="display:none;">
 <p>There are a few kinds of radiation for which we have already established the cause.</p>
-    <p>Study the list below to help you get started.  For each type of radiation we give several examples.  The examples with the yellow stars <b>do</b> emit this kind of radiation, those with white stars <b>do not</b>.</p>
+    <p>Study the list below to help you get started.  For each type of radiation we give several examples. The examples with the yellow stars <b>do</b> emit this kind of radiation, those with white stars <b>do not</b>.</p>
         <ol>
             <li>Alpha waves: <i>Whenever there is at least one small cone</i><br><br>
                 <img src="/images/instructions/ins2_1.png" alt="ex1" style="width:600px;">
@@ -172,7 +170,7 @@
 
 <div class="instructions well" id="ins_3" style="display:none;">
 
-<p>We have discovered that other arrangements of cones emit <b>10</b> other types of radiation.</p>
+<p>We have discovered that other arrangements of cones emit <b>5</b> other types of radiation.</p>
 <p>However, we don't yet know what conditions (arrangements of cones) cause these types of radiation to be emitted...</p>
 
 <p>Your job is to perform some additional experiments investigating each type of radiation.</p>
@@ -183,8 +181,8 @@
         <li>Design <b>7</b> of your own arrangements, and test each one to see if it emits this kind of radiation.
         <li>See <b>8</b> other arrangements and guess which of these will emit this kind of radiation.
         <li>Describe the rule that captures what arrangements will emit this radiation in your own words.
-        <li>See the <b>8</b> arragnements again including your initial choices and the choices of your <b>collaborator</b>.
-        <li><b>Revise</b> your initial choices under consideration of the choices of your collaborator.
+        <li>See the <b>8</b> arragnements again including your initial choices and the choices of the other <b>player</b>.
+        <li><b>Revise</b> your initial choices under consideration of the choices of the other player.
     </ol>
     <button class="button" id="ins_3_btn"><span>Continue</span></button>
 </div>
@@ -219,7 +217,7 @@
 
     <p>After your experiments, you will be tested on the cause of this kind of radiation.  You will be shown 8 new arrangements.  Select which you think emit radiation when tested.  <i>You must select at least one and less than all eight.</i></p>
 
-    <p>You will receive a cash bonus of <b>5 cents</b> for each of the arrangements you guess correctly about (watch video).  This means that you can make a bonus of up to $0.05 &#215 10 radiation types &#215 8 test arrangements = $4.  Play the video below to continue.</p>
+    <p>You will receive a cash bonus of <b>5 cents</b> for each of the arrangements you guess correctly about (watch video).  This means that you can make a bonus of up to $0.05 &#215 5 radiation types &#215 8 test arrangements = $2.  Play the video below to continue.</p>
 
     <div align=center>
         <video controls height=300 id="selection_vid" name="selection_vid" controls="controls" onended="$('#ins_5_btn').prop('disabled', false);" muted>
@@ -244,7 +242,7 @@
 </div>
 
 <div class="instructions well" id="ins_7" style="display:none;">
-    <p>Finally, you will be asked to <b>revise</b> your initial choices based on the choices of your collaborator. Make sure that you consider their choices <b>carefully</b>. Your collaborator might have performed <b>different experiments</b>, meaning that their knowledge about radiation can help <b>improve</b> the accuracy of your initial choices (and hence your overall bonus).</p>
+    <p>Finally, you will be asked to <b>revise</b> your initial choices based on the choices of the other player. The other player will have performed <b>different experiments</b>, meaning that their knowledge about radiation may help <b>improve</b> the accuracy of your choices (and so increase your bonus).</p>
 
     <div align=center>
         <video height=450 id="collaborator_vid" name="collaborator_vid" controls="controls" onended="$('#ins_7_btn').prop('disabled', false);" muted>
@@ -261,11 +259,11 @@
 
     <ol>
         <li>Your task is to work out what rule determines whether an arrangement of cones will emit radiation<br><br>
-        <li>You will do this for 10 different types of radiation waves (10 different rules)<br><br>
+        <li>You will do this for 5 different types of radiation waves (5 different rules)<br><br>
         <li>You will see one positive example and then create 7 more of your own each time<br><br>
-        <li>You will then get a chance to demonstrate your understanding by guessing about whether 8 new arrangements will emit this type of arrangements (making 5 cents for each one you get right)<br><br>
-        <li> You will describe the rule in your own words before moving on to the next type of radiation<br><br>
-        <li> You will then see the choices your collaborator and revise your initial choices. Make sure you consider the choices of your collaborator carefully, they might help improve your accuracy to increase your overall bonus
+        <li>You will then get a chance to demonstrate your understanding by guessing about whether 8 new arrangements will emit this type of arrangements<br><br>
+        <li>You will describe the rule in your own words before moving on to the next type of radiation<br><br>
+        <li>You will then see the choices the other player and revise your initial choices. Make sure you consider their choices carefully, they might help improve your accuracy to increase your overall bonus
     </ol>
     <button class="button" id="ins_8_btn"><span>Continue</span></button>
 </div>
@@ -292,7 +290,7 @@
     </p>
     <br/>
 
-    <p><b>3.</b> After doing your experiments, you will make judgments about new arrangements and earn 5 cents for one you get right
+    <p><b>3.</b> After doing your experiments, you will make judgments about new arrangements
         <select id="comprehension_q3" name="comprehension_q3" class="comprehensionQ">
            <option value="noresp" SELECTED></option>
            <option value="true">True</option>
@@ -319,7 +317,7 @@
     </p>
     <br>
 
-     <p><b>6.</b> You will revise your initial choices based on the choices of your collaborator (this might help increase the accuracy of your choices and hence your overall bonus)
+     <p><b>6.</b> You may revise your initial choices based on the choices of the other player and earn 5 cents for each one you get right
         <select id="comprehension_q6" name="comprehension_q6" class="comprehensionQ">
            <option value="noresp" SELECTED></option>
            <option value="true">True</option>
@@ -338,7 +336,7 @@
 
 
 <!-- ########################## Waiting area for the one who finishes first ######################### -->
-<div id="waiting-area-after-trial" style="display:none">
+<div id="waiting-area-after-trial" style="display:none; text-align:center; font-size:20px; margin-top: 20px">
   Please wait until <strong id = "user-finished2"></strong> finishes too.
 </div>
 
@@ -351,17 +349,30 @@
     <div id="query2">
     </div>
     <div id="phase4-div" style="display:none">
-      <textarea id="phase4-text" minlength="15" placeholder="Please enter your answer here" rows="4" cols="50" ></textarea>
+      <textarea id="phase4-text" placeholder="Please enter your answer here" rows="4" cols="50" ></textarea>
       <button id="phase4btn" type="button" name="button" style="display:block">Continue</button>
     </div>
   </div>
 
-
+  <!-- Phase 5 -->
+  <div id="phase5-div" style="display:none; margin:5%">
+    <div id="phase5inst" style="font-size:20px; margin-bottom: 15px">
+      Now that you've seen what the other participant chose, <br>please describe once more what makes a scene emit radiation (optional)
+    </div>
+    <textarea id="phase5-text" placeholder="Please enter your answer here (optional)" rows="4" cols="50" ></textarea>
+    <button id="phase5btn" type="button" name="button" style="display:block">Continue</button>
+  </div>
 
 
 
   <!-- Debriefing -->
   <div id="debrief" class="frame" style="display:none;">
+    <div id="user-left" style="display:none; font-sieze:40px; text-align:center;margin:5% 0">
+      Unfortunately, the other user left the game. <br>
+      You will compensate for your time after you complete this form.<br>
+      <br>
+
+    </div>
   	<h1>Demographics and Debrief</h1>
   	<p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
   	<p> <span style="font-weight:bold">Note</span>:  To continue, please answer <span style="color:red">all questions</span>.</p>

@@ -1383,21 +1383,14 @@ function Continue(e)
 
 
 
-function ContinuePosterior(e){ // reference from the button continue to posterior
+function ContinuePosterior(e){ // reference from the button continue from the posterior
 
 
-var sender = parent.document.getElementById("username").value;
-var room = parent.document.getElementById("groupName").value;
-// also add the selected values for prior and posterior
-// for some fucking weird reason trial_num is not defined in the scope of this function
-// but it is defined in the Continue function above. for that reason, i am sending the
-// trial_num variable to the SERVER from the Continue function
-var ph4_answer = parent.ph4_answer;
-var token_id = parent.token_id;
-parent.socket.emit('storeData', {ph4_answer, trialdata, sender, room, selected,
-   selectedPost, posit_ix, rule_name, token_id});
+// hide game
+parent.document.getElementById('game').style.display = "none";
+// hide images
+parent.document.getElementById('images-div').style.display = "none";
+// display phase 5
+parent.document.getElementById('phase5-div').style.display = "block";
 
-
-
-parent.StartIframe2();
 }

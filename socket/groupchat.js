@@ -128,6 +128,7 @@ module.exports = function(io, Users){
     if(user){
       console.log(io.sockets.adapter.rooms);
       console.log("User disconnected ");
+      console.log(user);
       io.to(user.room).emit('usersList', {params:'', users:users.GetUsersList(user.room), user_left:user}); // getting the user list using the function defined in the Users class
     }
   });

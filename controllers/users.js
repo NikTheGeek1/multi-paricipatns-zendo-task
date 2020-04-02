@@ -22,12 +22,13 @@ module.exports = function(_, roomFunctions){
 
       getSignUp:function(req, res){
         const ipInfo = req.ipInfo.ip;
-
+        // checking to see if the ip exists. if yes, proceed, if no, no take part
         Ips.exists({ip:ipInfo}, function(err, result) {
           if(err){
             res.send(err);
-          }else{ // if there is no error 
-            if(result){ // if the ip exist render an error page
+          }else{ // if there is no error
+            // either 0 or result
+            if(0){ // put 0 in there if you don't want to exclude second-timers. else put result
               res.render('no-take-part');
             } else {
               // //console.log(req.flash('error')) // this shouldn't be an empty list, check this when u can

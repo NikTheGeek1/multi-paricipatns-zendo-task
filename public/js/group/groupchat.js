@@ -37,6 +37,9 @@ $(document).ready(function(){
   socket = io({reconnection: false}); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{
+    // clearing the count down
+    clearInterval(waiting_lobby); // deleting the countdown function so it's stop counting
+
     // parameters of the start function
 
     rules = data.rules;
@@ -162,8 +165,6 @@ $(document).ready(function(){
       $.notify("Unfortunately, user " +data.user_left.name+ " just left the game");
 
     } else if (users.length === 2){
-      // clearing the count down
-      clearInterval(waiting_lobby); // deleting the countdown function so it's stop counting
 
       // only player 1 will ever reach that point
       // if there are two users, get the data game for the trial

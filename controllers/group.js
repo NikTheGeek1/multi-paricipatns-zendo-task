@@ -17,7 +17,6 @@ module.exports = function(_){
         //   if (err)return handleError(err);
         // });
 
-
         res.render('group', {groupName:room, username: req.session.username});
       }
          }

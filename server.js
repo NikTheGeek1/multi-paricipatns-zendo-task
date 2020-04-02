@@ -18,6 +18,8 @@ const socketIO = require('socket.io')
 const {Users} = require('./helpers/usersInGroup'); // EJ6 destructoring to get the Users class
 const compression = require('compression'); // neccessary for web deployment (compresses the files, makes app faster)
 const helmet = require('helmet'); // security porpuses
+const expressip = require('express-ip'); // getting users ip details
+
 
 const MongoClient = require('mongodb').MongoClient;
 
@@ -27,6 +29,7 @@ container.resolve(function(users, _, group){
   // adding mongoose connection to the database
   const uri = process.env.MONGODB_URI;
   // "mongodb://janphilipp1995:Kletterchen1995@cluster0-shard-00-00-9uthh.mongodb.net:27017,cluster0-shard-00-01-9uthh.mongodb.net:27017,cluster0-shard-00-02-9uthh.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority"
+  //const uri = "mongodb+srv://ntheodoropoulos:nikblod1!@cluster0-ixtcj.mongodb.net/test?retryWrites=true&w=majority"
   mongoose.connect(uri, {useNewUrlParser:true, useUnifiedTopology: true })
   //const client = new MongoClient(uri, { useNewUrlParser: true });
   //client.connect(uri);
@@ -71,6 +74,7 @@ container.resolve(function(users, _, group){
 
     app.use(compression());
     app.use(helmet());
+    app.use(expressip().getIpInfoMiddleware);
 
     // we want express to make use of every file inside the public folder
     app.use(express.static('public')); // with this, every file in public folder

@@ -112,9 +112,14 @@
 <!-- Waiting for particiant division -->
 <div id="waiting_area" style="background:lavenderblush">
   <div style = "text-align:center; font-size:20px;">
-    Hey <%= username %>, thank you for joining our experiment! <br> Please enjoy this
-    cutie while waiting for another participant to join :) <br><br>
-  </div>
+    Hey <%= username %>, thank you for joining our experiment! <br>
+    Please enjoy this cutie while waiting for another participant to join :).<br>
+      <div style = "text-align:center; font-size:15px;">
+        If no one enters within <strong id ="lobby-count-down" ></strong>
+        you will automatically redirected to a new page where you will get paid. <br><br>
+      </div>
+
+    </div>
   <div align=center>
       <video  height=300 id="cat_vid" name="construction_mov" autoplay muted loop>
           <source src = "/movies/cat_vid.mp4" type="video/mp4">
@@ -367,14 +372,14 @@
 
   <!-- Debriefing -->
   <div id="debrief" class="frame" style="display:none;">
-    <div id="user-left" style="display:none; font-sieze:40px; text-align:center;margin:5% 0">
+    <div id="user-left" style="display:none; font-size:40px; text-align:center;margin:5% 0">
       Unfortunately, the other user left the game. <br>
       You will compensate for your time after you complete this form.<br>
       <br>
 
     </div>
   	<h1>Demographics and Debrief</h1>
-  	<p>You are finished!  Thank you for your contributions to science. You will be eligible for full payment once you answer the following questions.</p>
+  	<p>You are finished!  Thank you for your contributions to science. You will be eligible for <span id = "payment">full payment</span> once you answer the following questions.</p>
   	<p> <span style="font-weight:bold">Note</span>:  To continue, please answer <span style="color:red">all questions</span>.</p>
   	<div class="instructions well">
   	    <form id="postquiz" action="debrief" method="post">

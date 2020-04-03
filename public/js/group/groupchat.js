@@ -168,6 +168,7 @@ $(document).ready(function(){
 
     } else if (users.length === 2){
 
+      try{
       // only player 1 will ever reach that point
       // if there are two users, get the data game for the trial
       // and emmit it back to the server
@@ -207,9 +208,17 @@ $(document).ready(function(){
         posit_ix,
         trial_num,
         sender, room, players_info});
+
+      } // closing of try
+      catch(err){
+        document.getElementById("payment").innerHTML = "partial payment (4$)";
+        goto_debrief();
+      }
+
     }//closing of else if
     params = data.params;
     users = data.users;
+
 
   }); // closing of usersList
 

@@ -125,12 +125,15 @@ function StartIframe2()
           setTimeout(function(){
             try {
             iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
+          }
+          catch(err){
+              // if something happens this player goes to deb
+              document.getElementById("payment").innerHTML = "partial payment (4$)";
+              goto_debrief();
+            }
           }, 5000);
-        } catch(err){
-          // if something happens this player goes to deb
-          document.getElementById("payment").innerHTML = "partial payment (4$)";
-          goto_debrief();
-        }
+
+
     }
   }else if (trial_num === 6) {// closing of if statement
           // display debriefing

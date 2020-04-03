@@ -73,14 +73,16 @@ $(document).ready(function(){
         var iframeContent = (iframe.contentWindow || iframe.contentDocument);
         try {
           iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
+          document.getElementById('game').style.display = "none";
+          // Adding the instructions Here
+          document.getElementById('ins_1').style.display = "block";
         }
         catch(err) {
-
-          location.reload();
+          // if something happens this player goes to deb
+          document.getElementById("payment").innerHTML = "partial payment (4$)";
+          goto_debrief();
         } // closing catch
-        document.getElementById('game').style.display = "none";
-        // Adding the instructions Here
-        document.getElementById('ins_1').style.display = "block";
+
 
 
   } // closing of if statement

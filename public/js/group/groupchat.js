@@ -35,6 +35,12 @@ $(document).ready(function(){
 
 
   socket = io({reconnection: false}); // we pass here the global io variable (it comes from the views/group.ejs one of the scripts at the bottom of the file (socket.io.js))
+
+
+  socket.on('goto_deb', () => {
+    document.getElementById("payment").innerHTML = "partial payment (4$)";
+    goto_debrief();
+  });
   // getting trial data from server
   socket.on('trialDataBackToClient', data =>{
     // clearing the count down
@@ -81,15 +87,11 @@ $(document).ready(function(){
       catch(err) {
         console.log(err);
         // if something happens this player goes to deb
+        socket.emit('error_waiting_area', data.room);
         document.getElementById("payment").innerHTML = "partial payment (4$)";
         goto_debrief();
       } // closing catch
     } // closing of if statement
-
-
-
-
-
   });
   /////////////////////////////////////////////////
   // IMPORTANT VARIABLES (need to make this clearer)

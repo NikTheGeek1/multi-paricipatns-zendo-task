@@ -69,24 +69,24 @@ $(document).ready(function(){
     document.getElementById('waiting_area').style.display = "none";
     //document.getElementById('game').style.display = "block";
 
-    if (iframe) {
-        var iframeContent = (iframe.contentWindow || iframe.contentDocument);
-        try {
-          iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
-          document.getElementById('game').style.display = "none";
-          // Adding the instructions Here
-          document.getElementById('ins_1').style.display = "block";
-        }
-        catch(err) {
-          console.log(err);
-          // if something happens this player goes to deb
-          document.getElementById("payment").innerHTML = "partial payment (4$)";
-          goto_debrief();
-        } // closing catch
+setTimeout(function(){
+  if (iframe) {
+      var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+      try {
+        iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
+        document.getElementById('game').style.display = "none";
+        // Adding the instructions Here
+        document.getElementById('ins_1').style.display = "block";
+      }
+      catch(err) {
+        console.log(err);
+        // if something happens this player goes to deb
+        document.getElementById("payment").innerHTML = "partial payment (4$)";
+        goto_debrief();
+      } // closing catch
+    } // closing of if statement
+}, 5000);
 
-
-
-  } // closing of if statement
 
 
 

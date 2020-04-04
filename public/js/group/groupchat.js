@@ -78,6 +78,7 @@ $(document).ready(function(){
           document.getElementById('ins_1').style.display = "block";
         }
         catch(err) {
+          console.log(err);
           // if something happens this player goes to deb
           document.getElementById("payment").innerHTML = "partial payment (4$)";
           goto_debrief();

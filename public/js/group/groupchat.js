@@ -67,7 +67,6 @@ $(document).ready(function(){
 
     //document.getElementById('game').style.display = "block";
 
-setTimeout(function(){
   var iframe = document.getElementById("game_frame");
   document.getElementById('game').style.visibility = "visible";
   document.getElementById('waiting_area').style.display = "none";
@@ -86,7 +85,6 @@ setTimeout(function(){
         goto_debrief();
       } // closing catch
     } // closing of if statement
-}, 5000);
 
 
 
@@ -147,12 +145,14 @@ setTimeout(function(){
       room: group,
       username: username
     }
-
+setTimeout(function(){
   socket.emit('join', params, function(){
     start_task_time = new Date();
     token_id = socket.id;
       console.log('User '+params.username+' has joined room '+ params.room)
     });
+}, 5000);
+
 
   });
 

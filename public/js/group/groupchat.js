@@ -64,12 +64,13 @@ $(document).ready(function(){
     players_info = data.players_info;
 
 
-    var iframe = document.getElementById("game_frame");
-    document.getElementById('game').style.visibility = "visible";
-    document.getElementById('waiting_area').style.display = "none";
+
     //document.getElementById('game').style.display = "block";
 
 setTimeout(function(){
+  var iframe = document.getElementById("game_frame");
+  document.getElementById('game').style.visibility = "visible";
+  document.getElementById('waiting_area').style.display = "none";
   if (iframe) {
       var iframeContent = (iframe.contentWindow || iframe.contentDocument);
       try {

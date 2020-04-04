@@ -87,9 +87,7 @@ $(document).ready(function(){
       catch(err) {
         console.log(err);
         // if something happens this player goes to deb
-        socket.emit('error_waiting_area', data.room);
-        document.getElementById("payment").innerHTML = "partial payment (4$)";
-        goto_debrief();
+        socket.emit('error_waiting_area', data.room)
       } // closing catch
     } // closing of if statement
   });

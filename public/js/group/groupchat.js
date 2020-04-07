@@ -27,7 +27,6 @@ $(document).ready(function(){
       // If the count down is over, write some text
       if (countDownSec < 1) {
         clearInterval(waiting_lobby); // deleting the function so it's stop counting
-        document.getElementById("payment").innerHTML = "partial payment (1$)"
         goto_debrief();
       }
       countDownSec = countDownSec - 1;
@@ -38,7 +37,6 @@ $(document).ready(function(){
 
 
   socket.on('goto_deb', () => {
-    document.getElementById("payment").innerHTML = "partial payment (4$)";
     goto_debrief();
   });
   // getting trial data from server
@@ -164,7 +162,6 @@ setTimeout(function(){
     if (users.length === 1){
 
       // THIS WILL EVALUATE TO TRUE ONLY WHEN SOMEBODY LEAVES DURING THE GAME
-      document.getElementById("payment").innerHTML = "partial payment (4$)"
       goto_debrief();
       document.getElementById('user-left').style.display = "block";
       $.notify("Unfortunately, user " +data.user_left.name+ " just left the game");
@@ -217,7 +214,6 @@ setTimeout(function(){
       } // closing of try
       catch(err){
         console.log(err);
-        document.getElementById("payment").innerHTML = "partial payment (4$)";
         goto_debrief();
       }
 
@@ -312,7 +308,12 @@ setTimeout(function(){
 
   $('#phase5btn').click(function(){
     ph5_answer = document.getElementById('phase5-text').value;
-    if (ph5_answer.length >= 15) {
+    // collecting data from accuracy
+    accuracy_q_list = []
+    $('#AQ_FORM input:checked').each(function(){
+      accuracy_q_list.push(this.value);
+    });
+    if (ph5_answer.length >= 15 && accuracy_q_list.length !== 0) {
       document.getElementById('phase5-div').style.display = "none";
       // displaying iframe (but hide iframe division)
       document.getElementById('game').style.display = "none";
@@ -325,10 +326,16 @@ setTimeout(function(){
       var posit_ix = iframeC.posit_ix;
       var selectedPost = iframeC.selectedPost;
       var rule_name = iframeC.rule_name;
+      // removing option of the accuacy question
+      [].slice.call(document.querySelectorAll('form input[type="radio"]')).filter(function(element, index) {
+        return element.checked = false;
+      })
       document.getElementById('phase5-text').value = "";
+      accuracy_q = accuracy_q_list[0];
       socket.emit('storeData', {
         ph4_answer,
         ph5_answer,
+        accuracy_q,
         sender,
         room,
         trialdata,
@@ -341,7 +348,7 @@ setTimeout(function(){
       StartIframe2();
     }
       else {
-        alert('Your answer must include at least 15 characters!')
+        alert('Your answer must include at least 15 characters, and you also need to rate the accuracy of the other player!')
       }
   });
 

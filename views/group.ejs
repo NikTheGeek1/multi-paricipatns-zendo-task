@@ -343,53 +343,102 @@
     <textarea id="phase5-text" placeholder="Please enter your answer here" rows="4" cols="50" ></textarea>
 
 
-    <!-- Question of accuracy -->
-    <form id="AQ_FORM">
-                    <h3>On a scale of 0-10 (where 10 is highly accurate), please rate how accurate you think the choices of the other player were. </h3>
+    <!-- Questions of phase 5 -->
+    <form id="ewQ_FORM">
+                    <h3>On a scale of 0-10 (where 10 is very expert), please rate how exper you think the other player was.</h3>
                     <ul class='likert'>
                       <li>
-                        <input type="radio" name="AQ" value=0>
-                        <label>Not accurate at all</label>
+                        <input type="radio" name="EQ" value=0>
+                        <label>Not expert at all</label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=1>
+                        <input type="radio" name="EQ" value=1>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=2>
+                        <input type="radio" name="EQ" value=2>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=3>
+                        <input type="radio" name="EQ" value=3>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=4>
+                        <input type="radio" name="EQ" value=4>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=5>
-                        <label>Moderately accurate</label>
+                        <input type="radio" name="EQ" value=5>
+                        <label>Moderately expert</label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=6>
+                        <input type="radio" name="EQ" value=6>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=7>
+                        <input type="radio" name="EQ" value=7>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=8>
+                        <input type="radio" name="EQ" value=8>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=9>
+                        <input type="radio" name="EQ" value=9>
                         <label></label>
                       </li>
                       <li>
-                        <input type="radio" name="AQ" value=10>
-                        <label>Completely accurate</label>
+                        <input type="radio" name="EQ" value=10>
+                        <label>Completely expert</label>
+                      </li>
+                    </ul>
+
+
+                    <h3>On a scale of 0-10 (where 10 is highly trustworthy), please rate how trustworhy you think the other player was in this round. </h3>
+                    <ul class='likert'>
+                      <li>
+                        <input type="radio" name="WQ" value=0>
+                        <label>Not trustworthy at all</label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=1>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=2>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=3>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=4>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=5>
+                        <label>Moderately trustworthy</label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=6>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=7>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=8>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=9>
+                        <label></label>
+                      </li>
+                      <li>
+                        <input type="radio" name="WQ" value=10>
+                        <label>Completely trustworthy</label>
                       </li>
                     </ul>
       </form>
@@ -434,22 +483,22 @@
              <!-- beginning of a question -->
              <div class="row question">
                  <div class="col-md-8">
-                     <b>3.</b>On a scale of 0-10 (where 10 is the highest trust), please rate how <b>TRUSTWORHTY</b> you found the other player was:
+                     <b>3.</b>On a scale of 0-10 (where 10 is completely engaging), please rate how <b>ENGAGING</b> you found the task:
                  </div>
                  <div class="col-md-4">
                      <select id="engagement" name="engagement" class="posttestQ">
                          <option value="--" SELECTED>
-                         <option value="10">10 - Very trustworthy</option>
+                         <option value="10">10 - Very engaging</option>
                          <option value="9">9</option>
                          <option value="8">8</option>
                          <option value="7">7</option>
                          <option value="6">6</option>
-                         <option value="5">5 - Moderately trustworthy</option>
+                         <option value="5">5 - Moderately engaging</option>
                          <option value="4">4</option>
                          <option value="3">3</option>
                          <option value="2">2</option>
                          <option value="1">1</option>
-                         <option value="0">0 - Not trustworhy</option>
+                         <option value="0">0 - Not engaging</option>
                      </select>
                  </div>
              </div>

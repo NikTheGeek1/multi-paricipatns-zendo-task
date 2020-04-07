@@ -309,11 +309,11 @@ setTimeout(function(){
   $('#phase5btn').click(function(){
     ph5_answer = document.getElementById('phase5-text').value;
     // collecting data from accuracy
-    accuracy_q_list = []
-    $('#AQ_FORM input:checked').each(function(){
-      accuracy_q_list.push(this.value);
+    ew_q_list = []
+    $('#ewQ_FORM input:checked').each(function(){
+      ew_q_list.push(this.value);
     });
-    if (ph5_answer.length >= 15 && accuracy_q_list.length !== 0) {
+    if (ph5_answer.length >= 15 && ew_q_list.length === 2) {
       document.getElementById('phase5-div').style.display = "none";
       // displaying iframe (but hide iframe division)
       document.getElementById('game').style.display = "none";
@@ -331,11 +331,13 @@ setTimeout(function(){
         return element.checked = false;
       })
       document.getElementById('phase5-text').value = "";
-      accuracy_q = accuracy_q_list[0];
+      expertise_q = ew_q_list[0];
+      trustworthy_q = ew_q_list[1];
       socket.emit('storeData', {
         ph4_answer,
         ph5_answer,
-        accuracy_q,
+        trustworthy_q,
+        expertise_q,
         sender,
         room,
         trialdata,
@@ -348,7 +350,7 @@ setTimeout(function(){
       StartIframe2();
     }
       else {
-        alert('Your answer must include at least 15 characters, and you also need to rate the accuracy of the other player!')
+        alert('Your answer must include at least 15 characters, and you also need to provide an anser for both subsequent questions!')
       }
   });
 

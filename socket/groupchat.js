@@ -64,7 +64,7 @@ module.exports = function(io, Users){
 
 
     // listenning to the joint event coming from the client
-    socket.on('join', (params, callback) => { // event is the data sent from the event called join
+    socket.on('join', (params) => { // event is the data sent from the event called join
       // decide which room to join here
       socket.username = params.username;
       socket.isAvailable = true;
@@ -103,7 +103,7 @@ module.exports = function(io, Users){
         console.log();
 
 
-      callback(); // this callback is neccessary because when we sent the message from
+      //callback(); // this callback is neccessary because when we sent the message from
       // the client side, we also added a function ('join', params, function) so
       // the callback reflects that function
     });

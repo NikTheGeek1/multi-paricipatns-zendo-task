@@ -144,13 +144,12 @@ $(document).ready(function(){
       room: group,
       username: username
     }
-setTimeout(function(){
+    
   socket.emit('join', params, function(){
     start_task_time = new Date();
     token_id = socket.id;
       console.log('User '+params.username+' has joined room '+ params.room)
     });
-}, 5000);
 
 
   });

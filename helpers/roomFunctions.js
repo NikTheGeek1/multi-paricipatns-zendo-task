@@ -5,12 +5,16 @@ return{
                 var crowding = this.roomsCrowding(allRooms, io);
                 var timeStamp = this.roomsTime(allRooms, io);
                 var availableRooms = this.availableRooms(crowding, timeStamp);
-                var roomToGetIn = this.getInRoom(availableRooms);
+                var roomsObj = this.getInRoom(availableRooms);
+                var roomToGetIn = roomsObj.room;
+                var isNew = roomsObj.isNew;
                 var usersInRooms = this.usersInRooms(io);
+
                 return {
                   "availableRooms": availableRooms,
                   "allRooms" : allRooms,
                   "roomToGetIn": roomToGetIn,
+                  "isNew": isNew,
                   "crowding": crowding,
                   "usersInRooms":usersInRooms,
                   "timeStamp":timeStamp
@@ -49,7 +53,7 @@ return{
               _.forEach(crowding, function(length, room) {
                 var remainingT =  new Date() - timeStamp[room];
                 console.log(remainingT);
-                if ((crowding[room] === 1) && (remainingT < 600000) && (remainingT > 3000)){ // if it's active for less than 10 mins,
+                if ((crowding[room] === 1) && (remainingT < 600000) && (remainingT > 0)){ // if it's active for less than 10 mins,
                   availableRooms.push(room);
                 }
               });
@@ -61,9 +65,9 @@ return{
               var newRoomName = this.generateroom(5);
               var firstRoom = availableRooms[0];
               if(typeof(firstRoom) == "undefined"){// if there is no available room
-                return newRoomName;
+                return {room:newRoomName, isNew:true};
               }else{
-                return firstRoom;
+                return {room:firstRoom, isNew:false};
                 }
               },
 

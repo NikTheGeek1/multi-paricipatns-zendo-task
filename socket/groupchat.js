@@ -155,6 +155,18 @@ module.exports = function(io, Users){
     });
   // creating a listenning event that every time a user disconnects, then the
   // function from the User class RemoveUser is going to be triggered and Remove user data
+  socket.on('drop_me_out', () => {
+    socket.disconnect();
+    var user = users.RemoveUser(socket.id);
+    if(user){
+
+      console.log(io.sockets.adapter.rooms);
+      console.log("User "+socket.username+" disconnected ");
+      console.log(user);
+      io.to(user.room).emit('usersList', {params:'', users:users.GetUsersList(user.room), user_left:user}); // getting the user list using the function defined in the Users class
+    }
+  });
+
   socket.on('disconnect', () => {
     var user = users.RemoveUser(socket.id);
     if(user){

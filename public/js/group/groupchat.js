@@ -14,9 +14,10 @@ $(document).ready(function(){
 
     // Update the count down every 1 second
     no_focus = setInterval(function() {
-    console.log('I ve lost focus'+countDownSec)
     if (countDownSec < 1) {
-        // drop them out
+      $.notify("You are logged out: the server didn't get any response for more than 2 minutes", {  autoHideDelay: 105000});
+      socket.emit('drop_me_out');
+      clearInterval(no_focus);
       }
       countDownSec = countDownSec - 1;
     }, 1000);
@@ -191,7 +192,8 @@ $(document).ready(function(){
       } else {
         $.notify("Unfortunately, user " +data.user_left.name+ " just left the game. Please wait until another participant joins.");
         setTimeout(() => {
-          location.reload();
+          window.onbeforeunload = '';
+          location.reload(true);
         },3000);
         // go from the beginning and make myself available
       }

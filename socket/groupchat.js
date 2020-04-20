@@ -6,8 +6,8 @@ const roomFunctions = require('../helpers/roomFunctions');
 module.exports = function(io, Users){
   // bringing in the users class with all the methods to remove, add etc uers from the user list
   users = new Users(); // the new keyword creates a new constructor (instance in python lang?)
-  user_names = {}
-
+  user_names = {};
+  trial_num = {};
   who_finished = {};
 
 
@@ -33,7 +33,7 @@ module.exports = function(io, Users){
 // receive dataURL for the screenshot on the server side and emit it privately
     socket.on('canvasData', (data)=>{
 
-          trial_num = data.trial_num;
+          trial_num[data.room] = data.trial_num;
           const sender = data.sender;
           const message = data.trialdata;
           const room = data.room;
@@ -137,7 +137,7 @@ module.exports = function(io, Users){
       const new_trial = new trialSchema();
       new_trial.username = data.sender;
       new_trial.room = data.room;
-      new_trial.trial = trial_num;
+      new_trial.trial = trial_num[data.room];
       new_trial.data = data.trialdata;
       new_trial.prior = data.selected;
       new_trial.posterior = data.selectedPost;
@@ -151,7 +151,7 @@ module.exports = function(io, Users){
       new_trial.save(function(err) {
         if (err)return handleError(err);
       });
-      console.log("Got the data from user: ", data.sender, "and trial: ", trial_num);
+      console.log("Got the data from user: ", data.sender, "and trial: ", trial_num[data.room]);
     });
   // creating a listenning event that every time a user disconnects, then the
   // function from the User class RemoveUser is going to be triggered and Remove user data

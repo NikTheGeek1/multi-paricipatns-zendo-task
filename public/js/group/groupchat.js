@@ -10,17 +10,25 @@ $(document).ready(function(){
     }
   };
   const lostControl = (e) => {
-    let countDownSec = 120;
 
-    // Update the count down every 1 second
-    no_focus = setInterval(function() {
-    if (countDownSec < 1) {
-      $.notify("You are logged out: the server didn't get any response for more than 2 minutes", {  autoHideDelay: 105000});
-      socket.emit('drop_me_out');
-      clearInterval(no_focus);
-      }
-      countDownSec = countDownSec - 1;
-    }, 1000);
+    if (document.activeElement === document.getElementById('game_frame') ){
+      // do nothing
+    } else {
+
+      let countDownSec = 120;
+
+      // Update the count down every 1 second
+      no_focus = setInterval(function() {
+      if (countDownSec < 1) {
+        $.notify("You are logged out: the server didn't get any response for more than 2 minutes", {  autoHideDelay: 105000});
+        socket.emit('drop_me_out');
+        clearInterval(no_focus);
+        }
+        console.log(no_focus);
+        countDownSec = countDownSec - 1;
+      }, 1000);
+
+    } // else statement
   };
   // adding event listeners for when losing and gaining focus
   window.addEventListener('blur', lostControl);

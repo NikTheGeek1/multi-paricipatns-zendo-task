@@ -76,7 +76,11 @@ $(document).ready(function(){
   document.getElementById('waiting_area').style.display = "none";
   if (iframe) {
       var iframeContent = (iframe.contentWindow || iframe.contentDocument);
+      while (typeof iframeContent.Start === 'undefined') {
+          //console.log('h');
+      }
       try {
+
         iframeContent.Start(rules[rand_trial], examples, test_cases, rule_names[rand_trial], rand_counter, posit_ix, trial_num);
         document.getElementById('game').style.display = "none";
         // Adding the instructions Here
@@ -140,14 +144,15 @@ $(document).ready(function(){
 
   socket.on('connect', function(){ // this listens to the connect event each time a user is connected
   // emmitting joint events (event only to one room)
+  token_id = socket.id;
   var params = {
       room: group,
-      username: username
+      username: username,
+      token_id: token_id
     }
-    
+
   socket.emit('join', params, function(){
-    start_task_time = new Date();
-    token_id = socket.id;
+    //start_task_time = new Date();
       console.log('User '+params.username+' has joined room '+ params.room)
     });
 
@@ -177,7 +182,8 @@ $(document).ready(function(){
 
 
       var sender = document.getElementById("username").value; // this is the name of the player1
-      var room = document.getElementById("groupName").value;
+      const room = data.params.room;
+      document.getElementById("groupName").value = room;
 
 
       var user1 = sender; // this is the name of the user1 (the participant who enters first)

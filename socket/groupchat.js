@@ -1,6 +1,7 @@
 // SERVER SIDE
 const trialSchema = require('../models/trial'); // fetching the userSchema in the user model
 const debriefSchema = require('../models/debrief'); // fetching the userSchema in the user model
+const roomFunctions = require('../helpers/roomFunctions');
 
 module.exports = function(io, Users){
   // bringing in the users class with all the methods to remove, add etc uers from the user list
@@ -18,8 +19,7 @@ module.exports = function(io, Users){
     // Getting trial data from client
     /////////////////////////////////////////
     socket.on('trialData', data => {
-      const room = data.room;
-
+      let room = data.room;
       who_finished[room] = []; // initialising here the who_finished array to use it later at the canvas message
       io.to(room).emit('trialDataBackToClient', data);
     });
@@ -63,22 +63,44 @@ module.exports = function(io, Users){
 
 
 
-
-
     // listenning to the joint event coming from the client
     socket.on('join', (params, callback) => { // event is the data sent from the event called join
-      socket.join(params.room);// this method allows users to connect to a particular channel, takes argument room name
-      if(typeof(io.sockets.adapter.rooms[params.room]['time']) === 'undefined'){
-        // we'll enter here only when the first user log in
-        io.sockets.adapter.rooms[params.room]['time'] = new Date();
-      }
+      // decide which room to join here
+      socket.username = params.username;
+      socket.isAvailable = true;
 
-      users.AddUserData(socket.id, params.username, params.room);
-      console.log('User '+params.username+' has joined room '+ params.room); // this will be displayed to the terminal
-      setTimeout(function(){
-        socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users class
-      },500);
+      const connClients = Object.keys(io.sockets.connected);
+      const idxOfI = connClients.indexOf(params.token_id);
+      connClients.splice(idxOfI, 1); // connected clients without me
+      for(let clID of connClients){
+         if(io.sockets.connected[clID].isAvailable){ // if available client is found
+                // set my availability
+                socket.isAvailable = false;
+                // set neighbours availability
+                io.sockets.connected[clID].isAvailable = false;
+                // find a room
+                let roomDetails = roomFunctions.main(io);
+                params.room = roomDetails['roomToGetIn'];
+                // put us in the room
+                socket.join(params.room);// this method allows users to connect to a particular channel, takes argument room name
+                io.sockets.connected[clID].join(params.room);// this method allows users to connect to a particular channel, takes argument room name
+                users.GetUsersList(params.room)
+                users.AddUserData(socket.id, socket.username, params.room);
+                users.AddUserData(io.sockets.connected[clID].id, io.sockets.connected[clID].username, params.room);
 
+                // setting up the time the room started to exist
+                if(typeof(io.sockets.adapter.rooms[params.room]['time']) === 'undefined'){
+                  // we'll enter here only when the first user log in
+                  io.sockets.adapter.rooms[params.room]['time'] = new Date();
+                }
+                setTimeout(() => {
+                  console.log('Users '+socket.username+' and '+io.sockets.connected[clID].username+'  have joined room '+ params.room); // this will be displayed to the terminal
+                  socket.broadcast.to(params.room).emit('usersList', {params:params, users:users.GetUsersList(params.room)}); // sending the userlist to the client from getting it using the function defined in the Users classz
+                }, 5000);
+            }
+        }
+
+        console.log();
 
 
       callback(); // this callback is neccessary because when we sent the message from
@@ -138,7 +160,7 @@ module.exports = function(io, Users){
     if(user){
 
       console.log(io.sockets.adapter.rooms);
-      console.log("User disconnected ");
+      console.log("User "+socket.username+" disconnected ");
       console.log(user);
       io.to(user.room).emit('usersList', {params:'', users:users.GetUsersList(user.room), user_left:user}); // getting the user list using the function defined in the Users class
     }

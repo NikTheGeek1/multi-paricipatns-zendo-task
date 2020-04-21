@@ -11,7 +11,7 @@ $(document).ready(function(){
   };
   const lostControl = (e) => {
 
-    if (document.activeElement === document.getElementById('game_frame') ){
+    if (document.hasFocus()){
       // do nothing
     } else {
 
@@ -100,7 +100,7 @@ $(document).ready(function(){
     players_info = data.players_info;
 
 
-
+    start_task_time = new Date();
     //document.getElementById('game').style.display = "block";
   document.getElementById("groupName").value = data.room;
   var iframe = document.getElementById("game_frame");

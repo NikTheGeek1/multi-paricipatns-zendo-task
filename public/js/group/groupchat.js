@@ -102,7 +102,7 @@ $(document).ready(function(){
 
 
     //document.getElementById('game').style.display = "block";
-
+  document.getElementById("groupName").value = data.room;
   var iframe = document.getElementById("game_frame");
   document.getElementById('game').style.visibility = "visible";
   document.getElementById('waiting_area').style.display = "none";

@@ -55,7 +55,7 @@ $(document).ready(function(){
 
   // setting up a timer for the participant who joined in first
   // Set the time we're counting down to
-    var countDownSec = 0;
+    var countDownSec = 600;
 
     // Update the count down every 1 second
     waiting_lobby = setInterval(function() {
